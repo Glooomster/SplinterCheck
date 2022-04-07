@@ -15,11 +15,11 @@ namespace SplinterTools.Helpers
 
         public int CollectionPower { get; set; }
 
-        public int completed_items { get; set; }
+        public string completed_items { get; set; }
 
         public int reward_qty { get; set; }
 
-        public string id { get; set; }
+        public string warning { get; set; }
         public string player { get; set; }
         public DateTime created_date { get; set; }
         public int created_block { get; set; }
@@ -31,7 +31,7 @@ namespace SplinterTools.Helpers
 
         public string refresh_trx_id { get; set; }
         public object rewards { get; set; }
-        public int league { get; set; }
+        public string league { get; set; }
 
     }
 

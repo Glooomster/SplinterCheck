@@ -8,32 +8,37 @@
         Title="Splinter Rating" Height="550" Width="1100" Background="DarkGray" Grid.IsSharedSizeScope="True" UseLayoutRounding="True" HorizontalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="1100" MaxWidth="1100" MinHeight="550" MaxHeight="550" WindowStyle="ThreeDBorderWindow" BorderThickness="1,1,1,1" ResizeMode="NoResize">
 
     <Grid x:Name="SplinterGid" Background="DarkGray" HorizontalAlignment="Center" Width="1100" Height="490" VerticalAlignment="Top">
-        <ListView Name="SplinterList" HorizontalAlignment="Center" Width="1050" FontSize="15" FontFamily="Arial" Margin="15,15,15,40" FontWeight="Normal" BorderThickness="2,2,2,2" RenderTransformOrigin="0.505,0.428">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1071*"/>
+            <ColumnDefinition Width="29*"/>
+        </Grid.ColumnDefinitions>
+        <ListView Name="SplinterList" HorizontalAlignment="Left" Width="1050" FontSize="15" FontFamily="Arial" Margin="25,15,0,40" FontWeight="Normal" BorderThickness="2,2,2,2" RenderTransformOrigin="0.505,0.428" d:ItemsSource="{d:SampleData}" Grid.ColumnSpan="2">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
-                <GridView>
+                <GridView x:Name="ctlDataGrid">
+
                     <GridViewColumn Header="Name"  Width="150" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="Rating" Width="100" DisplayMemberBinding="{Binding Rating}" />
                     <GridViewColumn Header="CP" Width="100" DisplayMemberBinding="{Binding CollectionPower}" />
-                    <GridViewColumn Header="Quest" Width="100" DisplayMemberBinding="{Binding total_items}" />
+                    <GridViewColumn Header="League" Width="100" DisplayMemberBinding="{Binding league}" />
                     <GridViewColumn Header="Completed" Width="100" DisplayMemberBinding="{Binding completed_items}" />
-                    <GridViewColumn Header="Start" Width="190" DisplayMemberBinding="{Binding created_date}" />
-                    <GridViewColumn Header="Finish" Width="190" DisplayMemberBinding="{Binding claim_date}" />
-                    <GridViewColumn Header="Rewards" Width="100" DisplayMemberBinding="{Binding RewardQty}" />
+                    <GridViewColumn Header="Start" Width="190" DisplayMemberBinding="{Binding created_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
+                    <GridViewColumn Header="Finish" Width="190" DisplayMemberBinding="{Binding claim_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
+                    <GridViewColumn Header="Warning" Width="100" DisplayMemberBinding="{Binding warning}" />
                 </GridView>
             </ListView.View>
         </ListView>
         <Button x:Name="btnReload" Content="Automatic Refresh" Height="30" Width="193" 
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                 Click="btnRefresh_Click"  
-                Margin="25,455,882,2">
+                Margin="25,456,853,4">
         </Button>
         <Button x:Name="btnAutoStop" Content="Stop" 
-                Margin="222,456,798,0" VerticalAlignment="Top" 
+                Margin="222,456,769,0" VerticalAlignment="Top" 
                 Height="30" Width="80" Click="btnAutoStop_Click"/>
 
     </Grid>
