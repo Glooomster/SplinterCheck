@@ -5,41 +5,74 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SplinterTools"
         mc:Ignorable="d" FontSize="17" Loaded="Window_Loaded"
-        Title="Splinter Rating" Height="550" Width="1100" Background="DarkGray" Grid.IsSharedSizeScope="True" UseLayoutRounding="True" HorizontalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="1100" MaxWidth="1100" MinHeight="550" MaxHeight="550" WindowStyle="ThreeDBorderWindow" BorderThickness="1,1,1,1" ResizeMode="NoResize">
+        Title="Splinter Rating" Height="Auto" Width="Auto" Background="White" HorizontalContentAlignment="Left" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" HorizontalAlignment="Left" VerticalAlignment="Top">
 
-    <Grid x:Name="SplinterGid" Background="DarkGray" HorizontalAlignment="Center" Width="1100" Height="490" VerticalAlignment="Top">
+    <Grid x:Name="SplinterGid" Background="Transparent" HorizontalAlignment="Left" Margin="10,10,10,40" Width="Auto" Height="Auto" VerticalAlignment="Top">
+        <Grid.Resources >
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1071*"/>
-            <ColumnDefinition Width="29*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListView Name="SplinterList" HorizontalAlignment="Left" Width="1050" FontSize="15" FontFamily="Arial" Margin="25,15,0,40" FontWeight="Normal" BorderThickness="2,2,2,2" RenderTransformOrigin="0.505,0.428" d:ItemsSource="{d:SampleData}" Grid.ColumnSpan="2">
+        <ListView Name="SplinterList" HorizontalAlignment="Left" Width="Auto" Height="Auto" FontSize="15" FontFamily="Arial" FontWeight="Normal" BorderThickness="2,2,2,2" d:ItemsSource="{d:SampleData}" >
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                 </Style>
             </ListView.ItemContainerStyle>
+            <ListView.Resources>
+                <!--<DataTemplate x:Key="Templ">
+                    <TextBlock HorizontalAlignment="left" Text="{Binding}"/>
+                </DataTemplate>
+                <Style x:Key="HeaderStyle" TargetType="GridViewColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="left"/>
+                </Style>
+                <Style x:Key="ListviewStyle" TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                </Style>
+
+                <DataTemplate x:Key="ISBNTemplate">
+                    <TextBlock HorizontalAlignment="Right" 
+               Text="{Binding XPath=@ISBN}"/>
+                </DataTemplate>-->
+            </ListView.Resources>
             <ListView.View>
                 <GridView x:Name="ctlDataGrid">
-
-                    <GridViewColumn Header="Name"  Width="150" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Rating" Width="100" DisplayMemberBinding="{Binding Rating}" />
-                    <GridViewColumn Header="CP" Width="100" DisplayMemberBinding="{Binding CollectionPower}" />
-                    <GridViewColumn Header="League" Width="100" DisplayMemberBinding="{Binding league}" />
-                    <GridViewColumn Header="Completed" Width="100" DisplayMemberBinding="{Binding completed_items}" />
-                    <GridViewColumn Header="Start" Width="190" DisplayMemberBinding="{Binding created_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
-                    <GridViewColumn Header="Finish" Width="190" DisplayMemberBinding="{Binding claim_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
-                    <GridViewColumn Header="Warning" Width="100" DisplayMemberBinding="{Binding warning}" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" /> <!--HeaderTemplate="{StaticResource Templ}" HeaderContainerStyle="{StaticResource HeaderStyle}"-->
+                    <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding Rating}" />
+                    <GridViewColumn Header="CP"  DisplayMemberBinding="{Binding CollectionPower}" />
+                    <GridViewColumn Header="League"  DisplayMemberBinding="{Binding league}" />
+                    <GridViewColumn Header="Completed"  DisplayMemberBinding="{Binding completed_items}" />
+                    <GridViewColumn Header="Start"  DisplayMemberBinding="{Binding created_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
+                    <GridViewColumn Header="Finish" DisplayMemberBinding="{Binding claim_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
+                    <GridViewColumn Header="Warning"  DisplayMemberBinding="{Binding warning}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="btnReload" Content="Automatic Refresh" Height="30" Width="193" 
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                Click="btnRefresh_Click"  
-                Margin="25,456,853,4">
-        </Button>
+
+        <Border Grid.Row="0" Grid.Column="0">
+        </Border>
+        <Border Grid.Row="1" Grid.Column="0">
+        </Border>
+        <Button x:Name="btnReload" Content="Automatic Refresh" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Bottom" 
+                Height="30" Width="160" 
+                Click="btnRefresh_Click" Margin="0,0,0,-34"  
+                />
+
         <Button x:Name="btnAutoStop" Content="Stop" 
-                Margin="222,456,769,0" VerticalAlignment="Top" 
-                Height="30" Width="80" Click="btnAutoStop_Click"/>
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Bottom" 
+                Height="30" Width="60" Click="btnAutoStop_Click" Margin="165,0,0,-34"
+                />
 
     </Grid>
+
 </Window>

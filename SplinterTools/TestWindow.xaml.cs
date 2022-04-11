@@ -1,25 +1,19 @@
-﻿using System.Windows;
-using System.Collections.Generic;
-using System.Windows.Threading;
-using System;
-using System.Xml.Linq;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Data;
+using System.Linq;
+using System.Windows;
+using System.Xml.Linq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Converters;
-using System.Windows.Controls;
 using SplinterTools.Helpers;
 
 namespace SplinterTools
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TestWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TestWindow : Window
     {
+
 
         public string fileOfReportInXML = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
 
@@ -33,41 +27,19 @@ namespace SplinterTools
 
         XDocument doc = XDocument.Load(Directory.GetCurrentDirectory() + "/Files/AppConfig.xml");
 
-
-
-
-
-        public string test = "1";
-
-
-
-        public MainWindow()
+        public TestWindow()
         {
-
-
-
-
-
-
-
-
-
             InitializeComponent();
             ApiHelper.InitializeClient();
-
-
         }
 
-
- 
 
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //LoadConfig();
-
-
             GetSplinterData();
+
         }
 
         private static List<Accounts> LoadAccountsObject()
@@ -80,8 +52,6 @@ namespace SplinterTools
 
             return customers;
         }
-
-
         public async void GetSplinterData()
         {
 
@@ -143,36 +113,5 @@ namespace SplinterTools
 
         }
 
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            SetTimer();
-        }
-
-        DispatcherTimer dispatcherTimer = new DispatcherTimer();
-
-        public void SetTimer()
-        {
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
-            dispatcherTimer.Start();
-
-        }
-
-        protected void dispatcherTimer_Tick(object sender, EventArgs e)
-        {
-            GetSplinterData();
-        }
-
-
-        private void btnAutoStop_Click(object sender, RoutedEventArgs e)
-        {
-            dispatcherTimer.Stop();
-        }
-
-        private void btnTestButton_Click(object sender, RoutedEventArgs e)
-        {
-            TestWindow win2 = new TestWindow();
-            win2.Show();
-        }
     }
 }
