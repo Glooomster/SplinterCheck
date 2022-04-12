@@ -24,37 +24,27 @@ namespace SplinterTools
         public string fileOfReportInXML = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
 
         //public string ConfigFile = Directory.GetCurrentDirectory() + "/Files/AppConfig.xml";
-        public string[] strArray = XDocument.Load(Directory.GetCurrentDirectory() + "/Files/AppConfig.xml").Descendants("accName")
-            .Select(element => element.Value).ToArray();
+        //public string[] strArray = XDocument.Load(Directory.GetCurrentDirectory() + "/Files/AppConfig.xml").Descendants("accName")
+        //    .Select(element => element.Value).ToArray();
 
-        public string[] strArray3 = XDocument.Load(Directory.GetCurrentDirectory() + "/Files/AppConfig.xml").Descendants("accName")
-            .Select(element => element.Value).ToArray();
-
-
-        XDocument doc = XDocument.Load(Directory.GetCurrentDirectory() + "/Files/AppConfig.xml");
+        //public string[] strArray3 = XDocument.Load(Directory.GetCurrentDirectory() + "/Files/AppConfig.xml").Descendants("accName")
+        //    .Select(element => element.Value).ToArray();
 
 
+        //XDocument doc = XDocument.Load(Directory.GetCurrentDirectory() + "/Files/AppConfig.xml");
 
 
 
-        public string test = "1";
+
+
+        //public string test = "1";
 
 
 
         public MainWindow()
         {
-
-
-
-
-
-
-
-
-
             InitializeComponent();
             ApiHelper.InitializeClient();
-
 
         }
 
@@ -82,19 +72,31 @@ namespace SplinterTools
         }
 
 
+        //private static List<RentalModel> LoadRentalObject()
+        //{
+        //    string json = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
+
+
+        //    var customers = JsonConvert.DeserializeObject<List<Helpers.Accounts>>(File.ReadAllText(json));
+
+
+        //    return customers;
+        //}
+
+
         public async void GetSplinterData()
         {
 
 
 
             var accountDetails = LoadAccountsObject();
-            if (accountDetails != null)
-            {
-                for (int i = 0; i < accountDetails.Count; i++)
-                {
-                    System.Diagnostics.Debug.Print(accountDetails[i].accName + "test" + accountDetails[i].power);
-                }
-            }
+            //if (accountDetails != null)
+            //{
+            //    for (int i = 0; i < accountDetails.Count; i++)
+            //    {
+            //        System.Diagnostics.Debug.Print(accountDetails[i].accName + "test" + accountDetails[i].power);
+            //    }
+            //}
 
 
 
@@ -104,6 +106,10 @@ namespace SplinterTools
             {
                 var SplinterInfo = await SplinterProcessor.LoadSplinterInformation(accountDetails[i].accName);
                 var QuestInfo = await SplinterProcessor.LoadQuestInformation(accountDetails[i].accName);
+                var RentalInfo = await SplinterProcessor.LoadRentalInformation(accountDetails[i].accName);
+
+
+
 
                 string questItems = "";
                 string leagueTest = "";
@@ -123,10 +129,30 @@ namespace SplinterTools
 
                 questItems = QuestInfo[0].completed_items.ToString() + " / " + QuestInfo[0].total_items.ToString();
 
+                int rentCancelNumber = 0;
+
+                if (RentalInfo != null)
+                {
+                    for (int it = 0; it < RentalInfo.Length; it++)
+                    {
+                        if (RentalInfo[it].cancel_date != null)
+                        {
+                            System.Diagnostics.Debug.Print(RentalInfo[it].cancel_date.ToString());
+                            System.Diagnostics.Debug.Print(it.ToString());
+                            rentCancelNumber++;
+                        }
+                    }
+
+
+                }
+
+
+
 
 
                 NewList.Add(new Helpers.User()
                 {
+                    RentCancel = rentCancelNumber,
                     Name = SplinterInfo.name,
                     Rating = SplinterInfo.rating,
                     CollectionPower = SplinterInfo.collection_power,
@@ -135,7 +161,8 @@ namespace SplinterTools
                     created_date = QuestInfo[0].created_date,
                     claim_date = QuestInfo[0].claim_date,
                     reward_qty = QuestInfo[0].reward_qty,
-                    warning = warningMessage
+                    warning = warningMessage,
+
                 });
             }
 

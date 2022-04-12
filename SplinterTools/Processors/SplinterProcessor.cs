@@ -51,5 +51,26 @@ namespace SplinterTools
             }
         }
 
+        public static async Task<RentalModel[]> LoadRentalInformation(string Name)
+        {
+
+            string url = "";
+
+            url = "https://api2.splinterlands.com/market/active_rentals?renter=" + Name;
+
+            using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    RentalModel[] result = await response.Content.ReadAsAsync<RentalModel[]>();
+
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

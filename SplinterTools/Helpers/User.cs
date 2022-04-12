@@ -33,6 +33,8 @@ namespace SplinterTools.Helpers
         public object rewards { get; set; }
         public string league { get; set; }
 
+        public int RentCancel { get; set; }
+
     }
 
 }
