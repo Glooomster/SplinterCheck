@@ -11,7 +11,7 @@ using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Converters;
 using System.Windows.Controls;
-using SplinterTools.Helpers;
+
 
 namespace SplinterTools
 {
@@ -23,23 +23,6 @@ namespace SplinterTools
 
         public string fileOfReportInXML = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
 
-        //public string ConfigFile = Directory.GetCurrentDirectory() + "/Files/AppConfig.xml";
-        //public string[] strArray = XDocument.Load(Directory.GetCurrentDirectory() + "/Files/AppConfig.xml").Descendants("accName")
-        //    .Select(element => element.Value).ToArray();
-
-        //public string[] strArray3 = XDocument.Load(Directory.GetCurrentDirectory() + "/Files/AppConfig.xml").Descendants("accName")
-        //    .Select(element => element.Value).ToArray();
-
-
-        //XDocument doc = XDocument.Load(Directory.GetCurrentDirectory() + "/Files/AppConfig.xml");
-
-
-
-
-
-        //public string test = "1";
-
-
 
         public MainWindow()
         {
@@ -47,9 +30,6 @@ namespace SplinterTools
             ApiHelper.InitializeClient();
 
         }
-
-
- 
 
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
@@ -60,7 +40,7 @@ namespace SplinterTools
             GetSplinterData();
         }
 
-        private static List<Accounts> LoadAccountsObject()
+        private static List<Helpers.Accounts> LoadAccountsObject()
         {
             string json = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
 
@@ -72,16 +52,6 @@ namespace SplinterTools
         }
 
 
-        //private static List<RentalModel> LoadRentalObject()
-        //{
-        //    string json = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
-
-
-        //    var customers = JsonConvert.DeserializeObject<List<Helpers.Accounts>>(File.ReadAllText(json));
-
-
-        //    return customers;
-        //}
 
 
         public async void GetSplinterData()
@@ -90,16 +60,6 @@ namespace SplinterTools
 
 
             var accountDetails = LoadAccountsObject();
-            //if (accountDetails != null)
-            //{
-            //    for (int i = 0; i < accountDetails.Count; i++)
-            //    {
-            //        System.Diagnostics.Debug.Print(accountDetails[i].accName + "test" + accountDetails[i].power);
-            //    }
-            //}
-
-
-
             List<Helpers.User> NewList = new List<Helpers.User>();
 
             for (int i = 0; i < accountDetails.Count; i++)
@@ -110,21 +70,30 @@ namespace SplinterTools
 
 
 
+                string questItems, leagueTest, warningMessage;
 
-                string questItems = "";
-                string leagueTest = "";
-                string warningMessage = "";
 
                 if (SplinterInfo.league == 4)
-                    leagueTest = "S III";
+                    leagueTest = "Silver III";
+                else if (SplinterInfo.league == 5)
+                    leagueTest = "Silver II";
                 else if (SplinterInfo.league == 6)
-                    leagueTest = "S I";
+                    leagueTest = "Silver I";
+                else if (SplinterInfo.league == 7)
+                    leagueTest = "Gold III";
+                else if (SplinterInfo.league == 8)
+                    leagueTest = "Gold I";
+                else if (SplinterInfo.league == 9)
+                    leagueTest = "Gold I";
+                else leagueTest = "Warning";
 
 
                 if (SplinterInfo.collection_power < accountDetails[i].power)
                 {
                     warningMessage = "Power Missing";
                 }
+                else warningMessage = " N/A ";
+
 
 
                 questItems = QuestInfo[0].completed_items.ToString() + " / " + QuestInfo[0].total_items.ToString();
@@ -148,8 +117,6 @@ namespace SplinterTools
 
 
 
-
-
                 NewList.Add(new Helpers.User()
                 {
                     RentCancel = rentCancelNumber,
@@ -170,12 +137,13 @@ namespace SplinterTools
 
         }
 
+        public DispatcherTimer dispatcherTimer = new DispatcherTimer();
+
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
             SetTimer();
         }
 
-        DispatcherTimer dispatcherTimer = new DispatcherTimer();
 
         public void SetTimer()
         {
@@ -195,6 +163,7 @@ namespace SplinterTools
         {
             dispatcherTimer.Stop();
         }
+
 
         private void btnTestButton_Click(object sender, RoutedEventArgs e)
         {
