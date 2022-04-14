@@ -8,9 +8,9 @@ namespace SplinterTools.Helpers
 {
     [Serializable]
 
-    public class Accounts
+    public class AccountModel
     {
-        public string accName { get; set; }
-        public int power { get; set; }
+        public string AccName { get; set; }
+        public int Power { get; set; }
     }
 }

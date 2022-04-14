@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Windows.Threading;
 using System;
-using System.Xml.Linq;
-using System.Linq;
 using System.IO;
-using System.Data;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Converters;
+using System.Windows.Media;
 using System.Windows.Controls;
+using Twilio;
+using Twilio.Types;
+using Twilio.Rest.Api.V2010.Account;
+
 
 
 namespace SplinterTools
@@ -28,69 +26,57 @@ namespace SplinterTools
         {
             InitializeComponent();
             ApiHelper.InitializeClient();
-
         }
 
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //LoadConfig();
-
-
             GetSplinterData();
         }
 
-        private static List<Helpers.Accounts> LoadAccountsObject()
-        {
-            string json = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
 
 
-            var customers = JsonConvert.DeserializeObject<List<Helpers.Accounts>>(File.ReadAllText(json));
 
-
-            return customers;
-        }
-
-
+        List<ListViewItem> UserModelList = new List<ListViewItem>();
 
 
         public async void GetSplinterData()
         {
 
 
+            var accountDetails = Processors.LoadAccountDetailsProcessor.LoadAccountsObject();
 
-            var accountDetails = LoadAccountsObject();
-            List<Helpers.User> NewList = new List<Helpers.User>();
+
+
 
             for (int i = 0; i < accountDetails.Count; i++)
             {
-                var SplinterInfo = await SplinterProcessor.LoadSplinterInformation(accountDetails[i].accName);
-                var QuestInfo = await SplinterProcessor.LoadQuestInformation(accountDetails[i].accName);
-                var RentalInfo = await SplinterProcessor.LoadRentalInformation(accountDetails[i].accName);
 
+                ListViewItem OneListItem = new ListViewItem();
+
+
+
+
+
+
+                var SplinterInfo = await Processors.SplinterProcessor.LoadSplinterInformation(accountDetails[i].AccName);
+                var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(accountDetails[i].AccName);
+                var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(accountDetails[i].AccName);
 
 
                 string questItems, leagueTest, warningMessage;
 
 
-                if (SplinterInfo.league == 4)
-                    leagueTest = "Silver III";
-                else if (SplinterInfo.league == 5)
-                    leagueTest = "Silver II";
-                else if (SplinterInfo.league == 6)
-                    leagueTest = "Silver I";
-                else if (SplinterInfo.league == 7)
-                    leagueTest = "Gold III";
-                else if (SplinterInfo.league == 8)
-                    leagueTest = "Gold I";
-                else if (SplinterInfo.league == 9)
-                    leagueTest = "Gold I";
-                else leagueTest = "Warning";
+                int value = SplinterInfo.league;
+                var enumDisplayStatus = (Helpers.Settings.League)value;
+                leagueTest = enumDisplayStatus.ToString();
 
 
-                if (SplinterInfo.collection_power < accountDetails[i].power)
+                if (SplinterInfo.collection_power < accountDetails[i].Power)
                 {
                     warningMessage = "Power Missing";
+                    OneListItem.Background = Brushes.Coral;
+                    //Processors.MessageProcessor.SendMessage(warningMessage);
                 }
                 else warningMessage = " N/A ";
 
@@ -114,61 +100,74 @@ namespace SplinterTools
 
 
                 }
-
-
-
-                NewList.Add(new Helpers.User()
+                OneListItem.Content = new Helpers.UserModel()
                 {
                     RentCancel = rentCancelNumber,
                     Name = SplinterInfo.name,
                     Rating = SplinterInfo.rating,
                     CollectionPower = SplinterInfo.collection_power,
-                    league = leagueTest,
-                    completed_items = questItems,
-                    created_date = QuestInfo[0].created_date,
-                    claim_date = QuestInfo[0].claim_date,
-                    reward_qty = QuestInfo[0].reward_qty,
-                    warning = warningMessage,
+                    League = leagueTest,
+                    Completed_items = questItems,
+                    Created_date = QuestInfo[0].created_date,
+                    Claim_date = QuestInfo[0].claim_date,
+                    Reward_qty = QuestInfo[0].reward_qty,
+                    Warning = warningMessage,
 
-                });
+                };
+                UserModelList.Add(OneListItem);
+
+
             }
 
-            SplinterList.ItemsSource = NewList;
+            SplinterList.ItemsSource = UserModelList;
 
         }
 
-        public DispatcherTimer dispatcherTimer = new DispatcherTimer();
+        public DispatcherTimer dispatcherTimer = new();
 
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+
+        //public void ChangeRowColor()
+        //{
+        //    UserModelList[0].Background = NewBackground;
+        //    listView.Items.Refresh();
+        //}
+
+
+        private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
+            BtnRefresh.IsEnabled = false;
             SetTimer();
         }
 
 
         public void SetTimer()
         {
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
             dispatcherTimer.Start();
 
         }
 
-        protected void dispatcherTimer_Tick(object sender, EventArgs e)
+        protected void DispatcherTimer_Tick(object sender, EventArgs e)
         {
             GetSplinterData();
         }
 
 
-        private void btnAutoStop_Click(object sender, RoutedEventArgs e)
+        private void BtnAutoStop_Click(object sender, RoutedEventArgs e)
         {
+            BtnRefresh.IsEnabled = true;
             dispatcherTimer.Stop();
         }
 
 
-        private void btnTestButton_Click(object sender, RoutedEventArgs e)
+        private void BtnTestButton_Click_1(object sender, RoutedEventArgs e)
         {
-            TestWindow win2 = new TestWindow();
+            TestWindow win2 = new();
             win2.Show();
         }
+
+
+
     }
 }
