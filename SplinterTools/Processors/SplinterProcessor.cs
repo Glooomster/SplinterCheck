@@ -52,7 +52,7 @@ namespace SplinterTools.Processors
         {
 
 
-            string url = "https://api2.splinterlands.com/market/active_rentals?renter=" + Name;
+            string url = "https://api2.splinterlands.com/market/active_rentals?renter=" + Name + "&offset=0&limit=5000";
 
             using HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url);
             {

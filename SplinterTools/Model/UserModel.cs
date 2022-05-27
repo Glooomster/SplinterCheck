@@ -21,6 +21,7 @@ namespace SplinterTools.Helpers
         public object Rewards { get; set; }
         public string League { get; set; }
         public int RentCancel { get; set; }
+        public int Test { get; set; }
 
     }
 

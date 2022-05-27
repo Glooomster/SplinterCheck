@@ -5,9 +5,7 @@ using System;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Controls;
-using Twilio;
-using Twilio.Types;
-using Twilio.Rest.Api.V2010.Account;
+
 
 
 
@@ -22,6 +20,10 @@ namespace SplinterTools
         public string fileOfReportInXML = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
 
 
+        
+        public int TestValue;
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -31,7 +33,7 @@ namespace SplinterTools
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            GetSplinterData();
+            GetSplinterData(0);
         }
 
 
@@ -40,21 +42,19 @@ namespace SplinterTools
         List<ListViewItem> UserModelList = new List<ListViewItem>();
 
 
-        public async void GetSplinterData()
+        public async void GetSplinterData(int testr)
         {
-
+  
 
             var accountDetails = Processors.LoadAccountDetailsProcessor.LoadAccountsObject();
 
-
+            UserModelList.Clear();
 
 
             for (int i = 0; i < accountDetails.Count; i++)
             {
 
                 ListViewItem OneListItem = new ListViewItem();
-
-
 
 
 
@@ -112,6 +112,7 @@ namespace SplinterTools
                     Claim_date = QuestInfo[0].claim_date,
                     Reward_qty = QuestInfo[0].reward_qty,
                     Warning = warningMessage,
+                    Test =+ testr,
 
                 };
                 UserModelList.Add(OneListItem);
@@ -120,8 +121,12 @@ namespace SplinterTools
             }
 
             SplinterList.ItemsSource = UserModelList;
+            SplinterList.Items.Refresh();
 
         }
+
+
+
 
         public DispatcherTimer dispatcherTimer = new();
 
@@ -135,6 +140,7 @@ namespace SplinterTools
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
+            
             BtnRefresh.IsEnabled = false;
             SetTimer();
         }
@@ -150,7 +156,9 @@ namespace SplinterTools
 
         protected void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            GetSplinterData();
+            TestValue += 1; 
+
+            GetSplinterData(TestValue);
         }
 
 

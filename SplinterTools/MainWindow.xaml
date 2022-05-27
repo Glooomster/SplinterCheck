@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SplinterTools"
         mc:Ignorable="d" FontSize="17" Loaded="Window_Loaded"
-        Title="Splinter Rating" Height="Auto" Width="Auto" Background="White" HorizontalContentAlignment="Left" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" HorizontalAlignment="Left" VerticalAlignment="Top">
+        Title="Splinter Check" Height="Auto" Width="Auto" Background="White" HorizontalContentAlignment="Left" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" HorizontalAlignment="Left" VerticalAlignment="Top">
 
     <Grid x:Name="SplinterGid" Background="Transparent" HorizontalAlignment="Left" Margin="10,10,10,40" Width="Auto" Height="Auto" VerticalAlignment="Top">
         <Grid.Resources >
@@ -54,6 +54,7 @@
                     <GridViewColumn Header=" Finish " DisplayMemberBinding="{Binding Claim_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
                     <GridViewColumn Header=" Cancellation "  DisplayMemberBinding="{Binding RentCancel}" />
                     <GridViewColumn Header=" Warning "  DisplayMemberBinding="{Binding Warning}" />
+                    <GridViewColumn Header=" Test "  DisplayMemberBinding="{Binding Test}" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -61,6 +62,13 @@
         <Border Grid.Row="0" Grid.Column="0">
         </Border>
         <Border Grid.Row="1" Grid.Column="0">
+            <ComboBox x:Name="cmbRefresh" Margin="230,5,518,11" Text="Timer">
+                <ComboBoxItem IsSelected="True">10 (sec)</ComboBoxItem>
+                <ComboBoxItem>30 (sec)</ComboBoxItem>
+                <ComboBoxItem>1 (min)</ComboBoxItem>
+                <ComboBoxItem>5 (min)</ComboBoxItem>
+                <ComboBoxItem>10 (min)</ComboBoxItem>
+            </ComboBox>
         </Border>
         <Button x:Name="BtnRefresh" Content="Automatic Refresh" 
                 HorizontalAlignment="Left" 
