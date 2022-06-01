@@ -105,6 +105,7 @@ namespace SplinterTools
                     RentCancel = rentCancelNumber,
                     Name = SplinterInfo.name,
                     Rating = SplinterInfo.rating,
+                    Capture_rate = SplinterInfo.capture_rate/100,
                     CollectionPower = SplinterInfo.collection_power,
                     League = leagueTest,
                     Completed_items = questItems,
@@ -113,6 +114,7 @@ namespace SplinterTools
                     Reward_qty = QuestInfo[0].reward_qty,
                     Warning = warningMessage,
                     Test =+ testr,
+
 
                 };
                 UserModelList.Add(OneListItem);

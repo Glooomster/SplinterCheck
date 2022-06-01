@@ -22,6 +22,8 @@ namespace SplinterTools.Helpers
         public string League { get; set; }
         public int RentCancel { get; set; }
         public int Test { get; set; }
+        public int Capture_rate { get; set; }
+
 
     }
 

@@ -47,6 +47,7 @@
                     <GridViewColumn Header=" Name " DisplayMemberBinding="{Binding Name}" />
                     <!--HeaderTemplate="{StaticResource Templ}" HeaderContainerStyle="{StaticResource HeaderStyle}"-->
                     <GridViewColumn Header=" Rating " DisplayMemberBinding="{Binding Rating}" />
+                    <GridViewColumn Header=" Capture Rate " DisplayMemberBinding="{Binding Capture_rate}" />
                     <GridViewColumn Header=" CP "  DisplayMemberBinding="{Binding CollectionPower}" />
                     <GridViewColumn Header=" League "  DisplayMemberBinding="{Binding League}" />
                     <GridViewColumn Header=" Completed "  DisplayMemberBinding="{Binding Completed_items}" />
