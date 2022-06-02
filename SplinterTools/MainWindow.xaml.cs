@@ -122,8 +122,14 @@ namespace SplinterTools
 
             }
 
+            
+
             SplinterList.ItemsSource = UserModelList;
             SplinterList.Items.Refresh();
+           // dbGrid.ItemsSource = UserModelList;
+
+
+            // this.dbGrid.ItemsSource = UserModelList;
 
         }
 
@@ -177,7 +183,15 @@ namespace SplinterTools
             win2.Show();
         }
 
+        private void ListViewItem_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            //var text = (dynamic)ListViewItem.selecteditem
 
+            //var row = sender as  ListViewItem;
 
+            //var epm = row[0].
+
+            MessageBox.Show("test");
+        }
     }
 }
