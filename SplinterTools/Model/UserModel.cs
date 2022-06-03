@@ -23,6 +23,7 @@ namespace SplinterTools.Helpers
         public int RentCancel { get; set; }
         public int Test { get; set; }
         public int Capture_rate { get; set; }
+        public int Rshares { get; set; }
 
 
     }

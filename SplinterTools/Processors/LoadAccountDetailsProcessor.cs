@@ -8,10 +8,10 @@ namespace SplinterTools.Processors
 {
     public class LoadAccountDetailsProcessor
     {
-        public static List<Helpers.AccountModel> LoadAccountsObject()
+        public static List<Model.AccountModel> LoadAccountsObject()
         {
             string json = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
-            var SplinterAccounts = JsonConvert.DeserializeObject<List<Helpers.AccountModel>>(File.ReadAllText(json));
+            var SplinterAccounts = JsonConvert.DeserializeObject<List<Model.AccountModel>>(File.ReadAllText(json));
 
             return SplinterAccounts;
         }

@@ -48,6 +48,28 @@ namespace SplinterTools.Processors
             }
         }
 
+        public static async Task<leagues[]> LoadLeagueInformation()
+        {
+
+
+            string url = "https://api2.splinterlands.com/settings";
+
+            using HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url);
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    leagues[] result = await response.Content.ReadAsAsync<leagues[]>();
+
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+
         public static async Task<RentalModel[]> LoadRentalInformation(string Name)
         {
 

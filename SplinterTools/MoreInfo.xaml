@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SplinterTools"
         mc:Ignorable="d"
-        Title="More Info" Height="285" Width="400">
+        Title="More Info" Height="285" Width="400" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="140*"></RowDefinition>
@@ -25,8 +25,8 @@
         <Label x:Name="lblPower" Grid.Row="0" HorizontalContentAlignment="Right" Content="Power" HorizontalAlignment="Left" Margin="10,110,0,0"></Label>
         <TextBox x:Name="TxtPower" Grid.Column="1" HorizontalAlignment="Left" Margin="10,110,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 
-        <Button x:Name="BtnPrev" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="Prev" Width="50" Height="25" Margin="10,0,0,0"></Button>
-        <Button x:Name="BtnNext" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="Next" Width="50" Height="25" Margin="70,0,0,0" Grid.ColumnSpan="2"></Button>
+        <Button x:Name="BtnPrev" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="Prev" Width="50" Height="25" Margin="10,0,0,0" Click="BtnPrev_Click"></Button>
+        <Button x:Name="BtnNext" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="Next" Width="50" Height="25" Margin="70,0,0,0" Grid.ColumnSpan="2" Click="BtnNext_Click"></Button>
 
     </Grid>
 </Window>
