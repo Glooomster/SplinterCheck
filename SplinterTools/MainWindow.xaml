@@ -54,11 +54,13 @@
 					<GridViewColumn Header=" Rating " DisplayMemberBinding="{Binding Rating}" />
 					<GridViewColumn Header=" Capture Rate " DisplayMemberBinding="{Binding Capture_rate}" />
 					<GridViewColumn Header=" CP "  DisplayMemberBinding="{Binding CollectionPower}" />
-					<GridViewColumn Header=" League "  DisplayMemberBinding="{Binding League}" />
+                    <GridViewColumn Header=" League "  DisplayMemberBinding="{Binding League}" />
+                    <GridViewColumn Header=" Quest "  DisplayMemberBinding="{Binding QuestTitle}" />
                     <GridViewColumn Header=" Focus Win "  DisplayMemberBinding="{Binding Completed_items}" />
+                    <GridViewColumn Header=" Chests "  DisplayMemberBinding="{Binding Earned_Chests}" />
                     <GridViewColumn Header=" Rshares "  DisplayMemberBinding="{Binding Rshares}" />
-                    <GridViewColumn Header=" Start "  DisplayMemberBinding="{Binding Created_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
-					<GridViewColumn Header=" Finish " DisplayMemberBinding="{Binding Claim_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
+                    <GridViewColumn Header=" Start(UTC) "  DisplayMemberBinding="{Binding Created_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
+					<!--<GridViewColumn Header=" Finish " DisplayMemberBinding="{Binding Claim_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />-->
 					<GridViewColumn Header=" Cancellation "  DisplayMemberBinding="{Binding RentCancel}" />
 					<GridViewColumn Header=" Warning "  DisplayMemberBinding="{Binding Warning}" />
 					<GridViewColumn Header=" Test "  DisplayMemberBinding="{Binding Test}" />

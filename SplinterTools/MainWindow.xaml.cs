@@ -5,7 +5,10 @@ using System;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Threading.Tasks;
+using SplinterTools.Processors;
 using SplinterTools.Helpers;
+using System.Linq;
 
 namespace SplinterTools
 {
@@ -33,6 +36,7 @@ namespace SplinterTools
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Helpers.SplinterlandsData.splinterlandsSettings = Task.Run(() => new Splinterlands().GetSplinterlandsSettings()).Result;
             GetSplinterData(0);
         }
 
@@ -51,17 +55,17 @@ namespace SplinterTools
             UserModelList.Clear();
 
 
-            List<DailyLootModel> authors = new List<DailyLootModel>
-{
-                    new DailyLootModel { Base = 300,Step = 1.2, Level = 1 },
-                    new DailyLootModel { Base = 5000, Step = 1.13, Level = 2},
-                    new DailyLootModel { Base = 18000, Step = 1.09, Level = 3 }
-};
+//            List<DailyLootModel> authors = new List<DailyLootModel>
+//{
+//                    new DailyLootModel { Base = 300,Step = 1.2, Level = 1 },
+//                    new DailyLootModel { Base = 5000, Step = 1.13, Level = 2},
+//                    new DailyLootModel { Base = 18000, Step = 1.09, Level = 3 }
+//};
 
-            foreach (DailyLootModel author in authors)
-            {
-                MessageBox.Show($"Author: {author.Base}:{author.Step}:{author.Level}");
-            }
+//            foreach (DailyLootModel author in authors)
+//            {
+//                MessageBox.Show($"Author: {author.Base}:{author.Step}:{author.Level}");
+//            }
 
 
 
@@ -76,6 +80,23 @@ namespace SplinterTools
                 var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(accountDetails[i].AccName);
                 var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(accountDetails[i].AccName);
 
+               // int test = Processors.Quests.CalculateEarnedChests(QuestInfo[0].chest_tier, QuestInfo[0].rshares);
+
+                int baseRshares = SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].@base;
+                double multiplier = SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
+                int chests = 0;
+                int fp_limit = baseRshares;
+
+
+                while (QuestInfo[0].rshares > fp_limit)
+                {
+                    chests++;
+                    fp_limit = Convert.ToInt32(baseRshares + fp_limit * multiplier);
+                }
+           
+
+
+
 
 
                 string questItems, leagueTest, warningMessage;
@@ -83,6 +104,11 @@ namespace SplinterTools
 
                 int value = SplinterInfo.league;
                 var enumDisplayStatus = (Helpers.Settings.League)value;
+
+                //string leagueTest2 = SplinterlandsData.splinterlandsSettings.leagues.Where(x => x.level == SplinterInfo.league).FirstOrDefault().name.ToString();
+
+                string league3 = SplinterlandsData.splinterlandsSettings.leagues[SplinterInfo.league].name;
+
                 leagueTest = enumDisplayStatus.ToString();
 
 
@@ -92,9 +118,15 @@ namespace SplinterTools
                     OneListItem.Background = Brushes.Coral;
                     //Processors.MessageProcessor.SendMessage(warningMessage);
                 }
+                if (QuestInfo[0].created_date < DateTime.UtcNow.AddHours(-24))
+                {
+                    warningMessage = "Refresh Quest";
+                    OneListItem.Background = Brushes.Coral;
+                }
                 else warningMessage = " N/A ";
 
 
+                string splinter = SplinterlandsData.splinterlandsSettings.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
 
                 questItems = QuestInfo[0].completed_items.ToString(); //+ " / " + QuestInfo[0].reward_qty.ToString();
 
@@ -111,21 +143,21 @@ namespace SplinterTools
                             rentCancelNumber++;
                         }
                     }
-
-
                 }
                 OneListItem.Content = new Helpers.UserModel()
                 {
                     RentCancel = rentCancelNumber,
                     Name = SplinterInfo.name,
                     Rating = SplinterInfo.rating,
-                    Capture_rate = SplinterInfo.capture_rate/100,
+                    Capture_rate = SplinterInfo.capture_rate / 100,
                     CollectionPower = SplinterInfo.collection_power,
-                    League = leagueTest,
+                    League = league3,
+                    QuestTitle = splinter,
                     Completed_items = questItems,
+                    Earned_Chests = chests,
                     Rshares = QuestInfo[0].rshares,
-                    Created_date = QuestInfo[0].created_date,
-                    Claim_date = QuestInfo[0].claim_date,
+                    Created_date = QuestInfo[0].created_date ,
+                   // Claim_date = QuestInfo[0].claim_date,
                     Reward_qty = QuestInfo[0].reward_qty,
                     Warning = warningMessage,
                     Test =+ testr,

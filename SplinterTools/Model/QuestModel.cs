@@ -22,6 +22,7 @@ namespace SplinterTools
         public int chest_tier { get; set; }
         public int rshares { get; set; }
         public int league { get; set; }
+
     }
 
 

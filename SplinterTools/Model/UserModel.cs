@@ -24,6 +24,8 @@ namespace SplinterTools.Helpers
         public int Test { get; set; }
         public int Capture_rate { get; set; }
         public int Rshares { get; set; }
+        public int Earned_Chests { get; set; }
+        public string QuestTitle { get; set; }
 
 
     }
