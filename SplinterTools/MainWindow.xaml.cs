@@ -1,5 +1,5 @@
 ﻿using SplinterTools.Helpers;
-using SplinterTools.Processors;
+//using SplinterTools.Processors;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,10 +22,7 @@ namespace SplinterTools
 
         public string warningMessage = "";
 
-
-
-
-
+        public DispatcherTimer dispatcherTimer = new();
         public int TestValue;
 
 
@@ -38,7 +35,7 @@ namespace SplinterTools
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Helpers.SplinterlandsData.splinterlandsSettings = Task.Run(() => new Splinterlands().GetSplinterlandsSettings()).Result;
+            Helpers.SplinterlandsData.splinterlandsSettings = Task.Run(() => new Processors.Splinterlands().GetSplinterlandsSettings()).Result;
             GetSplinterData(0);
         }
 
@@ -50,7 +47,7 @@ namespace SplinterTools
         public async void GetSplinterData(int testr)
         {
 
-            // var LeagueInfo = await Processors.SplinterProcessor.LoadLeagueInformation();
+
 
             var accountDetails = Processors.LoadAccountDetailsProcessor.LoadAccountsObject();
 
@@ -148,7 +145,7 @@ namespace SplinterTools
 
             if (warningMessage.Length > 0)
             {
-                MessageProcessor.SendMessage(warningMessage);
+              Processors.MessageProcessor.SendMessage(warningMessage);
             }
 
             SplinterList.ItemsSource = UserModelList;
@@ -159,48 +156,25 @@ namespace SplinterTools
 
 
 
-        public DispatcherTimer dispatcherTimer = new();
-
-
-
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
 
-            int timerTicker = 0;
-            int getTimerTicker = cmbRefresh.SelectedIndex;
+            int timerTicker = Processors.RefreshProcessor.GetTimerSeconds(cmbRefresh.SelectedIndex);
 
-            if (getTimerTicker == 0)
-            {
-                timerTicker = 10;
-            }
-            else if (getTimerTicker == 1)
-            {
-                timerTicker = 30;
-            }
-            else if (getTimerTicker == 2)
-            {
-                timerTicker = 300;
-            }
-            else if (getTimerTicker == 3)
-            {
-                timerTicker = 600;
-            }
+            //int timerTicker = GetTimerSeconds(cmbRefresh.SelectedIndex);
+
+            dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, timerTicker);
+            dispatcherTimer.Start();
 
 
 
             BtnRefresh.IsEnabled = false;
             cmbRefresh.IsEnabled = false;
-            SetTimer(timerTicker);
-        }
-
-
-        public void SetTimer(int refreshTimerTick)
-        {
-            dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, refreshTimerTick);
-            dispatcherTimer.Start();
 
         }
+
+
 
         protected void DispatcherTimer_Tick(object sender, EventArgs e)
         {
@@ -208,6 +182,7 @@ namespace SplinterTools
 
             GetSplinterData(TestValue);
         }
+
 
 
         private void BtnAutoStop_Click(object sender, RoutedEventArgs e)
@@ -259,5 +234,11 @@ namespace SplinterTools
             var user = row.Content as Helpers.UserModel;
             moreInformation.ShowAccount(user);
         }
+
+
+
+
+
+
     }
 }
