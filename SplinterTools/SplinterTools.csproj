@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Global\**" />
+    <Compile Remove="Views\**" />
+    <EmbeddedResource Remove="Global\**" />
+    <EmbeddedResource Remove="Views\**" />
+    <None Remove="Global\**" />
+    <None Remove="Views\**" />
+    <Page Remove="Global\**" />
+    <Page Remove="Views\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Files\AppConfig.json" />
     <None Remove="Files\SecurityConfig.json" />
   </ItemGroup>
@@ -30,9 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Global\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="Views\" />
   </ItemGroup>
 
 </Project>

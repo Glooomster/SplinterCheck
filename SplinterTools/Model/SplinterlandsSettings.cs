@@ -36,8 +36,8 @@ namespace SplinterTools.Model
         public List<League> leagues { get; set; }
         public Dec dec { get; set; }
         public Guilds guilds { get; set; }
-        public object? barracks_perks { get; set; }
-        public object? frays { get; set; }
+        public object barracks_perks { get; set; }
+        public object frays { get; set; }
         public List<SupportedCurrency> supported_currencies { get; set; }
         public int transfer_cooldown_blocks { get; set; }
         public DateTime untamed_edition_date { get; set; }
@@ -169,8 +169,8 @@ namespace SplinterTools.Model
 
     public class Bsc
     {
-        public object? DEC { get; set; }
-        public object? SPS { get; set; }
+        public object DEC { get; set; }
+        public object SPS { get; set; }
     }
 
     public class CardHoldingAccount
@@ -292,8 +292,8 @@ namespace SplinterTools.Model
 
     public class Ethereum
     {
-        public object? DEC { get; set; }
-        public object? SPS { get; set; }
+        public object DEC { get; set; }
+        public object SPS { get; set; }
         public int withdrawal_fee { get; set; }
         public int sps_withdrawal_fee { get; set; }
         public Contracts contracts { get; set; }

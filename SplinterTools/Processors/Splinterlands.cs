@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SplinterTools.Model;
-using SplinterTools.Net;
+
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -30,7 +30,7 @@ namespace SplinterTools.Processors
         public async Task<SplinterlandsSettings> GetSplinterlandsSettings()
         {
             string result = "";
-            HttpResponseMessage response = await HttpWebRequest.client.GetAsync(API_URL + SP_SPLINTERLANDS_SETTINGS);
+            HttpResponseMessage response =  await ApiHelper.ApiClient.GetAsync(API_URL + SP_SPLINTERLANDS_SETTINGS);
             if (response.IsSuccessStatusCode)
             {
                 result = await response.Content.ReadAsStringAsync();
@@ -45,7 +45,7 @@ namespace SplinterTools.Processors
         public async Task<string> GetUserAccesToken(string username, string bid, string sid, string signature, string ts)
         {
             string result = "";
-            HttpResponseMessage response = await HttpWebRequest.client.GetAsync(API_URL + SP_ACCESS_TOKEN.Replace("@@_username_@@", username).Replace("@@_bid_@@", bid).Replace("@@_sid_@@", sid).Replace("@@_signature_@@", signature).Replace("@@_timestamp_@@", ts));
+            HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(API_URL + SP_ACCESS_TOKEN.Replace("@@_username_@@", username).Replace("@@_bid_@@", bid).Replace("@@_sid_@@", sid).Replace("@@_signature_@@", signature).Replace("@@_timestamp_@@", ts));
             if (response.IsSuccessStatusCode)
             {
                 result = await response.Content.ReadAsStringAsync();
@@ -57,7 +57,7 @@ namespace SplinterTools.Processors
         {
             string result = "";
 
-            HttpResponseMessage response = await HttpWebRequest.client.GetAsync(API_URL + SP_OUTSTANGING_MATCH + username);
+            HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(API_URL + SP_OUTSTANGING_MATCH + username);
             if (response.IsSuccessStatusCode)
             {
                 result = await response.Content.ReadAsStringAsync();
@@ -69,7 +69,7 @@ namespace SplinterTools.Processors
         {
             string result = "";
 
-            HttpResponseMessage response = await HttpWebRequest.client.GetAsync(API_URL + SP_TRANSACTION_DETAILS + tx);
+            HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(API_URL + SP_TRANSACTION_DETAILS + tx);
             if (response.IsSuccessStatusCode)
             {
                 result = await response.Content.ReadAsStringAsync();
@@ -80,12 +80,13 @@ namespace SplinterTools.Processors
         public async Task<string> GetSeasonDetails(string username, string bid, string sid, string sig, string ts)
         {
             string result = "";
-            HttpResponseMessage response = await HttpWebRequest.client.GetAsync(API_URL + SP_CLAIM_SEASON_REWARDS.Replace("@@_username_@@", username).Replace("@@_browserid_@@", bid).Replace("@@_sessionid_@@", sid).Replace("@@_signature_@@", sig).Replace("@@_timestamp_@@", ts));
+            HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(API_URL + SP_CLAIM_SEASON_REWARDS.Replace("@@_username_@@", username).Replace("@@_browserid_@@", bid).Replace("@@_sessionid_@@", sid).Replace("@@_signature_@@", sig).Replace("@@_timestamp_@@", ts));
             if (response.IsSuccessStatusCode)
             {
                 result = await response.Content.ReadAsStringAsync();
             }
             return result;
         }
+
     }
 }

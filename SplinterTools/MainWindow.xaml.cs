@@ -1,14 +1,14 @@
-﻿using System.Windows;
-using System.Collections.Generic;
-using System.Windows.Threading;
-using System;
-using System.IO;
-using System.Windows.Media;
-using System.Windows.Controls;
-using System.Threading.Tasks;
+﻿using SplinterTools.Helpers;
 using SplinterTools.Processors;
-using SplinterTools.Helpers;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace SplinterTools
 {
@@ -19,6 +19,8 @@ namespace SplinterTools
     {
 
         public string fileOfReportInXML = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
+
+        public string warningMessage = "";
 
 
 
@@ -48,24 +50,12 @@ namespace SplinterTools
         public async void GetSplinterData(int testr)
         {
 
-           // var LeagueInfo = await Processors.SplinterProcessor.LoadLeagueInformation();
+            // var LeagueInfo = await Processors.SplinterProcessor.LoadLeagueInformation();
 
             var accountDetails = Processors.LoadAccountDetailsProcessor.LoadAccountsObject();
 
             UserModelList.Clear();
 
-
-//            List<DailyLootModel> authors = new List<DailyLootModel>
-//{
-//                    new DailyLootModel { Base = 300,Step = 1.2, Level = 1 },
-//                    new DailyLootModel { Base = 5000, Step = 1.13, Level = 2},
-//                    new DailyLootModel { Base = 18000, Step = 1.09, Level = 3 }
-//};
-
-//            foreach (DailyLootModel author in authors)
-//            {
-//                MessageBox.Show($"Author: {author.Base}:{author.Step}:{author.Level}");
-//            }
 
 
 
@@ -80,7 +70,7 @@ namespace SplinterTools
                 var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(accountDetails[i].AccName);
                 var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(accountDetails[i].AccName);
 
-               // int test = Processors.Quests.CalculateEarnedChests(QuestInfo[0].chest_tier, QuestInfo[0].rshares);
+                // int test = Processors.Quests.CalculateEarnedChests(QuestInfo[0].chest_tier, QuestInfo[0].rshares);
 
                 int baseRshares = SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].@base;
                 double multiplier = SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
@@ -93,42 +83,30 @@ namespace SplinterTools
                     chests++;
                     fp_limit = Convert.ToInt32(baseRshares + fp_limit * multiplier);
                 }
-           
 
 
 
+                string league = SplinterlandsData.splinterlandsSettings.leagues[SplinterInfo.league].name;
 
-
-                string questItems, leagueTest, warningMessage;
-
-
-                int value = SplinterInfo.league;
-                var enumDisplayStatus = (Helpers.Settings.League)value;
-
-                //string leagueTest2 = SplinterlandsData.splinterlandsSettings.leagues.Where(x => x.level == SplinterInfo.league).FirstOrDefault().name.ToString();
-
-                string league3 = SplinterlandsData.splinterlandsSettings.leagues[SplinterInfo.league].name;
-
-                leagueTest = enumDisplayStatus.ToString();
 
 
                 if (SplinterInfo.collection_power < accountDetails[i].Power)
                 {
                     warningMessage = "Power Missing";
                     OneListItem.Background = Brushes.Coral;
-                    //Processors.MessageProcessor.SendMessage(warningMessage);
+
                 }
                 if (QuestInfo[0].created_date < DateTime.UtcNow.AddHours(-24))
                 {
                     warningMessage = "Refresh Quest";
                     OneListItem.Background = Brushes.Coral;
                 }
-                else warningMessage = " N/A ";
+                //else warningMessage = " N/A ";
 
 
                 string splinter = SplinterlandsData.splinterlandsSettings.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
 
-                questItems = QuestInfo[0].completed_items.ToString(); //+ " / " + QuestInfo[0].reward_qty.ToString();
+                string questItems = QuestInfo[0].completed_items.ToString(); 
 
                 int rentCancelNumber = 0;
 
@@ -151,22 +129,26 @@ namespace SplinterTools
                     Rating = SplinterInfo.rating,
                     Capture_rate = SplinterInfo.capture_rate / 100,
                     CollectionPower = SplinterInfo.collection_power,
-                    League = league3,
+                    League = league,
                     QuestTitle = splinter,
                     Completed_items = questItems,
                     Earned_Chests = chests,
                     Rshares = QuestInfo[0].rshares,
-                    Created_date = QuestInfo[0].created_date ,
-                   // Claim_date = QuestInfo[0].claim_date,
+                    Created_date = QuestInfo[0].created_date,
                     Reward_qty = QuestInfo[0].reward_qty,
                     Warning = warningMessage,
-                    Test =+ testr,
+                    Test = +testr,
 
 
 
                 };
                 UserModelList.Add(OneListItem);
 
+            }
+
+            if (warningMessage.Length > 0)
+            {
+                MessageProcessor.SendMessage(warningMessage);
             }
 
             SplinterList.ItemsSource = UserModelList;
@@ -183,23 +165,46 @@ namespace SplinterTools
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            
+
+            int timerTicker = 0;
+            int getTimerTicker = cmbRefresh.SelectedIndex;
+
+            if (getTimerTicker == 0)
+            {
+                timerTicker = 10;
+            }
+            else if (getTimerTicker == 1)
+            {
+                timerTicker = 30;
+            }
+            else if (getTimerTicker == 2)
+            {
+                timerTicker = 300;
+            }
+            else if (getTimerTicker == 3)
+            {
+                timerTicker = 600;
+            }
+
+
+
             BtnRefresh.IsEnabled = false;
-            SetTimer();
+            cmbRefresh.IsEnabled = false;
+            SetTimer(timerTicker);
         }
 
 
-        public void SetTimer()
+        public void SetTimer(int refreshTimerTick)
         {
             dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, refreshTimerTick);
             dispatcherTimer.Start();
 
         }
 
         protected void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            TestValue += 1; 
+            TestValue += 1;
 
             GetSplinterData(TestValue);
         }
@@ -208,7 +213,9 @@ namespace SplinterTools
         private void BtnAutoStop_Click(object sender, RoutedEventArgs e)
         {
             BtnRefresh.IsEnabled = true;
+            cmbRefresh.IsEnabled = true;
             dispatcherTimer.Stop();
+
         }
 
 
@@ -222,7 +229,7 @@ namespace SplinterTools
         {
 
 
-            var row = sender as  ListViewItem;
+            var row = sender as ListViewItem;
             var user = row.Content as Helpers.UserModel;
             var moreInformation = new MoreInfo();
             moreInformation.PrevAccount += MoreInformation_PrevAccount;
@@ -232,14 +239,14 @@ namespace SplinterTools
 
             moreInformation.Owner = this;
             moreInformation.ShowAccount(user);
-           
+
 
             //MessageBox.Show($"test {user.Name}");
         }
 
         private void MoreInformation_PrevAccount(MoreInfo moreInformation)
         {
-            if (SplinterList.SelectedIndex > 0 ) SplinterList.SelectedIndex -= 1;
+            if (SplinterList.SelectedIndex > 0) SplinterList.SelectedIndex -= 1;
             var row = SplinterList.SelectedItem as ListViewItem;
             var user = row.Content as Helpers.UserModel;
             moreInformation.ShowAccount(user);
@@ -247,7 +254,7 @@ namespace SplinterTools
 
         private void MoreInformation_NextAccount(MoreInfo moreInformation)
         {
-            if (SplinterList.SelectedIndex+1 < SplinterList.Items.Count) SplinterList.SelectedIndex += 1;
+            if (SplinterList.SelectedIndex + 1 < SplinterList.Items.Count) SplinterList.SelectedIndex += 1;
             var row = SplinterList.SelectedItem as ListViewItem;
             var user = row.Content as Helpers.UserModel;
             moreInformation.ShowAccount(user);
