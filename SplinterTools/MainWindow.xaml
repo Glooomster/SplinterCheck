@@ -62,7 +62,7 @@
                     <GridViewColumn Header=" Start(UTC) "  DisplayMemberBinding="{Binding Created_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
 					<!--<GridViewColumn Header=" Finish " DisplayMemberBinding="{Binding Claim_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />-->
 					<GridViewColumn Header=" Cancellation "  DisplayMemberBinding="{Binding RentCancel}" />
-					<GridViewColumn Header=" Warning "  DisplayMemberBinding="{Binding Warning}" />
+					<!--<GridViewColumn Header=" Warning "  DisplayMemberBinding="{Binding Warning}" />-->
 					<GridViewColumn Header=" Test "  DisplayMemberBinding="{Binding Test}" />
 				</GridView>
 			</ListView.View>

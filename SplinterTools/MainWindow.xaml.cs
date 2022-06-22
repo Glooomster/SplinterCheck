@@ -20,9 +20,12 @@ namespace SplinterTools
         public string fileOfReportInXML = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
 
         public string warningMessageTotal = "";
+        public string sentWhatsUpMessage = "";
 
         public DispatcherTimer dispatcherTimer = new();
         public int TestValue;
+
+
 
 
         public MainWindow()
@@ -39,7 +42,6 @@ namespace SplinterTools
         }
 
         List<ListViewItem> UserModelList = new List<ListViewItem>();
-
 
 
 
@@ -66,8 +68,6 @@ namespace SplinterTools
                 var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(accountDetails[i].AccName);
                 var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(accountDetails[i].AccName);
 
-                // int test = Processors.Quests.CalculateEarnedChests(QuestInfo[0].chest_tier, QuestInfo[0].rshares);
-
                 int baseRshares = Helpers.SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].@base;
                 double multiplier = Helpers.SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
                 int chests = 0;
@@ -83,21 +83,6 @@ namespace SplinterTools
 
 
                 string leagueName = Helpers.SplinterlandsData.splinterlandsSettings.leagues[SplinterInfo.league].name;
-
-
-
-                if (SplinterInfo.collection_power < accountDetails[i].Power)
-                {
-                    warningMessage = "Power Missing";
-                    OneListItem.Background = Brushes.Coral;
-
-                }
-                if (QuestInfo[0].created_date < DateTime.UtcNow.AddHours(-24))
-                {
-                    warningMessage = "Refresh Quest";
-                    OneListItem.Background = Brushes.Coral;
-                }
-                //else warningMessage = " N/A ";
 
 
                 string splinter = Helpers.SplinterlandsData.splinterlandsSettings.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
@@ -118,6 +103,40 @@ namespace SplinterTools
                         }
                     }
                 }
+
+
+
+
+                if (SplinterInfo.collection_power < accountDetails[i].Power)
+                {
+
+
+                    warningMessage = "Power Missing: " + (accountDetails[i].Power - SplinterInfo.collection_power).ToString() + "\n";
+                    OneListItem.Background = Brushes.Coral;
+
+                }
+
+                if (QuestInfo[0].created_date < DateTime.UtcNow.AddHours(-24))
+                {
+                    warningMessage = warningMessage + "Last Quest: \n" + QuestInfo[0].created_date + "\n"; // (DateTime.UtcNow.AddHours(-2) - QuestInfo[0].created_date).Hours.ToString() + "\n";
+                    OneListItem.Background = Brushes.Coral;
+                }
+
+                if (rentCancelNumber > 0)
+                {
+                    warningMessage = warningMessage + "Cancelations: " + rentCancelNumber.ToString() + "\n";
+                    OneListItem.Background = Brushes.Coral;
+                }
+                //else warningMessage = " N/A ";
+
+
+                if (warningMessage.Length > 0)
+                {
+                    warningMessageTotal = warningMessageTotal + SplinterInfo.name + ":\n" + warningMessage + "\n";
+                }
+
+
+
                 OneListItem.Content = new Helpers.UserModel()
                 {
                     RentCancel = rentCancelNumber,
@@ -132,25 +151,43 @@ namespace SplinterTools
                     Rshares = QuestInfo[0].rshares,
                     Created_date = QuestInfo[0].created_date,
                     Reward_qty = QuestInfo[0].reward_qty,
-                    Warning = warningMessage,
+                    //Warning = warningMessage,
                     Test = +testr,
 
 
 
                 };
-                warningMessageTotal = warningMessageTotal + Name + warningMessage;
+
+
+
+
 
                 UserModelList.Add(OneListItem);
 
             }
 
+
+
             if (warningMessageTotal.Length > 0)
             {
-              Processors.MessageProcessor.SendMessage(warningMessageTotal);
+
+
+                if (warningMessageTotal != sentWhatsUpMessage)
+                {
+                    MessageBox.Show(warningMessageTotal.ToString());
+                    //Processors.MessageProcessor.SendMessage(warningMessageTotal);
+                    sentWhatsUpMessage = warningMessageTotal; 
+
+                }
+
+                
+                //clear the message
+                warningMessageTotal = "";
             }
 
             SplinterList.ItemsSource = UserModelList;
             SplinterList.Items.Refresh();
+
 
         }
 
@@ -164,9 +201,16 @@ namespace SplinterTools
 
             //int timerTicker = GetTimerSeconds(cmbRefresh.SelectedIndex);
 
-            dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, timerTicker);
-            dispatcherTimer.Start();
+
+            if (dispatcherTimer != null)
+            {
+                dispatcherTimer.Tick += DispatcherTimer_Tick;
+                dispatcherTimer.Interval = new TimeSpan(0, 0, timerTicker);
+                dispatcherTimer.Start();
+
+            }
+
+
 
 
 
@@ -188,9 +232,17 @@ namespace SplinterTools
 
         private void BtnAutoStop_Click(object sender, RoutedEventArgs e)
         {
+            if (dispatcherTimer != null)
+            {
+                dispatcherTimer.Tick -= DispatcherTimer_Tick;
+                dispatcherTimer.Stop();
+
+            }
+
             BtnRefresh.IsEnabled = true;
             cmbRefresh.IsEnabled = true;
-            dispatcherTimer.Stop();
+;
+
 
         }
 

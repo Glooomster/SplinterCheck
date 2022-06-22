@@ -28,9 +28,13 @@ namespace SplinterTools.Processors
             }
             else if (SelectedCmbRefresh == 2)
             {
-                timerTicker = 300;
+                timerTicker = 60;
             }
             else if (SelectedCmbRefresh == 3)
+            {
+                timerTicker = 300;
+            }
+            else if (SelectedCmbRefresh == 4)
             {
                 timerTicker = 600;
             }
