@@ -1,5 +1,4 @@
-﻿using SplinterTools.Helpers;
-//using SplinterTools.Processors;
+﻿//using SplinterTools.Processors;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +19,7 @@ namespace SplinterTools
 
         public string fileOfReportInXML = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
 
-        public string warningMessage = "";
+        public string warningMessageTotal = "";
 
         public DispatcherTimer dispatcherTimer = new();
         public int TestValue;
@@ -61,7 +60,7 @@ namespace SplinterTools
 
                 ListViewItem OneListItem = new ListViewItem();
 
-
+                string warningMessage = "";
 
                 var SplinterInfo = await Processors.SplinterProcessor.LoadSplinterInformation(accountDetails[i].AccName);
                 var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(accountDetails[i].AccName);
@@ -69,8 +68,8 @@ namespace SplinterTools
 
                 // int test = Processors.Quests.CalculateEarnedChests(QuestInfo[0].chest_tier, QuestInfo[0].rshares);
 
-                int baseRshares = SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].@base;
-                double multiplier = SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
+                int baseRshares = Helpers.SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].@base;
+                double multiplier = Helpers.SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
                 int chests = 0;
                 int fp_limit = baseRshares;
 
@@ -83,7 +82,7 @@ namespace SplinterTools
 
 
 
-                string league = SplinterlandsData.splinterlandsSettings.leagues[SplinterInfo.league].name;
+                string leagueName = Helpers.SplinterlandsData.splinterlandsSettings.leagues[SplinterInfo.league].name;
 
 
 
@@ -101,7 +100,7 @@ namespace SplinterTools
                 //else warningMessage = " N/A ";
 
 
-                string splinter = SplinterlandsData.splinterlandsSettings.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
+                string splinter = Helpers.SplinterlandsData.splinterlandsSettings.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
 
                 string questItems = QuestInfo[0].completed_items.ToString(); 
 
@@ -126,7 +125,7 @@ namespace SplinterTools
                     Rating = SplinterInfo.rating,
                     Capture_rate = SplinterInfo.capture_rate / 100,
                     CollectionPower = SplinterInfo.collection_power,
-                    League = league,
+                    League = leagueName,
                     QuestTitle = splinter,
                     Completed_items = questItems,
                     Earned_Chests = chests,
@@ -139,13 +138,15 @@ namespace SplinterTools
 
 
                 };
+                warningMessageTotal = warningMessageTotal + Name + warningMessage;
+
                 UserModelList.Add(OneListItem);
 
             }
 
-            if (warningMessage.Length > 0)
+            if (warningMessageTotal.Length > 0)
             {
-              Processors.MessageProcessor.SendMessage(warningMessage);
+              Processors.MessageProcessor.SendMessage(warningMessageTotal);
             }
 
             SplinterList.ItemsSource = UserModelList;

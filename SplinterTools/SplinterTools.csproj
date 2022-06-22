@@ -32,12 +32,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Files\SecurityConfig.json">
+    <EmbeddedResource Include="Files\SecurityConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Files\AppConfig.json">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Files\AppConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

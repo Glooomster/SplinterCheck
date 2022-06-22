@@ -49,8 +49,6 @@ namespace SplinterTools.Processors
         }
 
 
-
-
         public static async Task<RentalModel[]> LoadRentalInformation(string Name)
         {
 
