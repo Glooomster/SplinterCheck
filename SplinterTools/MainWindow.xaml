@@ -92,7 +92,20 @@
 				Click="BtnAutoStop_Click" 
 				Margin="180,5,0,5"
 				/>
-		<Button x:Name="BtnTestButton" 
+
+        <Button x:Name="BtnEnableWhatsUp" 
+				Grid.Row="3"
+				HorizontalAlignment="Left" 
+				VerticalAlignment="Center" 
+				Height="30" 
+				Width="60" 
+				Click="BtnEnableWhatsUp_Click" 
+				Margin="360,5,0,5"
+                Background="Green">
+            <Image Source="/Resources/whatsup.png" />
+        </Button>
+
+        <Button x:Name="BtnTestButton" 
 
 				Content="Button" 
 				Grid.Row="3"
@@ -101,16 +114,25 @@
 				Height="30" 
                 Visibility="Hidden"
 				Margin="0,5,10,5"  
-				Click="BtnTestButton_Click_1"/>
+				Click="BtnTestButton_Click"/>
 
-		<ComboBox x:Name="cmbRefresh" 
+        <Button x:Name="BtnAddACcount"
+				Content="Add Account" 
+                Grid.Row="3"
+				HorizontalAlignment="Right" 
+				VerticalAlignment="Center" 
+				Height="30" 
+				Margin="0,5,10,5" Click="BtnAddACcount_Click"                  
+				/>
+
+        <ComboBox x:Name="cmbRefresh" 
 				  Margin="250,5,0,5" 
 				  Text="Timer" 
 				  Grid.Row="3"
 				  HorizontalAlignment="Left" 
 				  VerticalAlignment="Center" 
 				  Height="30" 
-				  Width="150" 
+				  Width="100" 
 				  
 				  >
 			<ComboBoxItem IsSelected="True">10 (sec)</ComboBoxItem>
@@ -120,6 +142,7 @@
 			<ComboBoxItem>10 (min)</ComboBoxItem>
 		</ComboBox>
 
-	</Grid>
+
+    </Grid>
 
 </Window>
