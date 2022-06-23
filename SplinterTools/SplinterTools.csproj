@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Compile Remove="Global\**" />
-    <Compile Remove="Views\**" />
     <EmbeddedResource Remove="Global\**" />
-    <EmbeddedResource Remove="Views\**" />
     <None Remove="Global\**" />
-    <None Remove="Views\**" />
     <Page Remove="Global\**" />
-    <Page Remove="Views\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,12 +32,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Files\AppConfig.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SplinterLandsAPI\SplinterLandsAPI\SplinterLandsAPI.csproj" />
   </ItemGroup>
 
 </Project>
