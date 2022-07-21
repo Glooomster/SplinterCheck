@@ -1,4 +1,4 @@
-﻿
+﻿//using SplinterTools.Processors;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,14 +8,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Microsoft.Extensions.Logging;
-using SplinterLandsAPI;
-
-
 
 namespace SplinterTools
 {
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -29,8 +24,6 @@ namespace SplinterTools
 
         public DispatcherTimer dispatcherTimer = new();
         public int TestValue;
-
-        public Boolean enableWhatsup = false;
 
 
 
@@ -57,8 +50,7 @@ namespace SplinterTools
 
 
 
-            var accountDetails = Processors.AccountDetailsProcessor.LoadAccountsObject();
-
+            var accountDetails = Processors.LoadAccountDetailsProcessor.LoadAccountsObject();
 
             UserModelList.Clear();
 
@@ -182,12 +174,8 @@ namespace SplinterTools
 
                 if (warningMessageTotal != sentWhatsUpMessage)
                 {
-                    //MessageBox.Show(warningMessageTotal.ToString());
-                    if (enableWhatsup)
-                    {
-                        Processors.MessageProcessor.SendMessage(warningMessageTotal);
-                    }
-                        
+                    MessageBox.Show(warningMessageTotal.ToString());
+                    //Processors.MessageProcessor.SendMessage(warningMessageTotal);
                     sentWhatsUpMessage = warningMessageTotal; 
 
                 }
@@ -208,8 +196,6 @@ namespace SplinterTools
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            sentWhatsUpMessage = "";
-
 
             int timerTicker = Processors.RefreshProcessor.GetTimerSeconds(cmbRefresh.SelectedIndex);
 
@@ -255,20 +241,16 @@ namespace SplinterTools
 
             BtnRefresh.IsEnabled = true;
             cmbRefresh.IsEnabled = true;
-
-
-
-
+;
 
 
         }
 
 
-        private void BtnTestButton_Click(object sender, RoutedEventArgs e)
+        private void BtnTestButton_Click_1(object sender, RoutedEventArgs e)
         {
-
-            SplinterLandsClient client = new SplinterLandsClient();
-            var balances = client.GetTokenBalancesForPlayer("gloomster");
+            MoreInfo win2 = new();
+            win2.Show();
         }
 
         private void ListViewItem_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -306,40 +288,10 @@ namespace SplinterTools
             moreInformation.ShowAccount(user);
         }
 
-        private void BtnAddACcount_Click(object sender, RoutedEventArgs e)
-        {
-            var addNewAccount = new AddAccount();
-
-
-            addNewAccount.SaveData += SaveData_AddAccount;
 
 
 
-            addNewAccount.Owner = this;
-            addNewAccount.ShowAddWindow();
 
 
-        }
-
-
-        private void SaveData_AddAccount(AddAccount addNewAccount)
-        {
-            
-
-            GetSplinterData(0);
-        }
-
-        private void BtnEnableWhatsUp_Click(object sender, RoutedEventArgs e)
-        {
-            if (enableWhatsup)
-            {
-                enableWhatsup = false;
-            }
-            else
-            {
-                enableWhatsup = true;
-            }
-
-        }
     }
 }

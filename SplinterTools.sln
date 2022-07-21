@@ -5,12 +5,6 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplinterTools", "SplinterTools\SplinterTools.csproj", "{3EB73B24-E3FA-4E65-9D91-721FCA70033A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplinterLands.DTOs", "..\SplinterLandsAPI\SplinterLands.DTOs\SplinterLands.DTOs.csproj", "{2B542A71-42BF-46C3-BB4D-D889FC6CA977}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplinterLandsAPI", "..\SplinterLandsAPI\SplinterLandsAPI\SplinterLandsAPI.csproj", "{7EF45374-9B5A-4BD3-820B-4B5815BC9B91}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplinterLandsAPI.Test", "..\SplinterLandsAPI\SplinterLandsAPI.Test\SplinterLandsAPI.Test.csproj", "{60334372-8BF6-47CF-A450-398E8AD908E9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,18 +15,6 @@ Global
 		{3EB73B24-E3FA-4E65-9D91-721FCA70033A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EB73B24-E3FA-4E65-9D91-721FCA70033A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EB73B24-E3FA-4E65-9D91-721FCA70033A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B542A71-42BF-46C3-BB4D-D889FC6CA977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B542A71-42BF-46C3-BB4D-D889FC6CA977}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B542A71-42BF-46C3-BB4D-D889FC6CA977}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B542A71-42BF-46C3-BB4D-D889FC6CA977}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7EF45374-9B5A-4BD3-820B-4B5815BC9B91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7EF45374-9B5A-4BD3-820B-4B5815BC9B91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7EF45374-9B5A-4BD3-820B-4B5815BC9B91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7EF45374-9B5A-4BD3-820B-4B5815BC9B91}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60334372-8BF6-47CF-A450-398E8AD908E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60334372-8BF6-47CF-A450-398E8AD908E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60334372-8BF6-47CF-A450-398E8AD908E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60334372-8BF6-47CF-A450-398E8AD908E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
