@@ -40,8 +40,4 @@
     <Page Include="App.xaml" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\SplinterLandsAPI\SplinterLandsAPI\SplinterLandsAPI.csproj" />
-  </ItemGroup>
-
 </Project>

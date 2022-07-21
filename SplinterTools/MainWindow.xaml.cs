@@ -8,8 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Microsoft.Extensions.Logging;
-using SplinterLandsAPI;
 
 
 
@@ -76,7 +74,7 @@ namespace SplinterTools
                 var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(accountDetails[i].AccName);
                 var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(accountDetails[i].AccName);
 
-                int baseRshares = Helpers.SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].@base;
+                int baseRshares = Helpers.SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].@_base;
                 double multiplier = Helpers.SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
                 int chests = 0;
                 int fp_limit = baseRshares;
@@ -90,7 +88,7 @@ namespace SplinterTools
 
 
 
-                string leagueName = Helpers.SplinterlandsData.splinterlandsSettings.leagues[SplinterInfo.league].name;
+                string leagueName = "test"; //Helpers.SplinterlandsData.splinterlandsSettings.leagues[SplinterInfo.league].name;
 
 
                 string splinter = Helpers.SplinterlandsData.splinterlandsSettings.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
@@ -267,8 +265,8 @@ namespace SplinterTools
         private void BtnTestButton_Click(object sender, RoutedEventArgs e)
         {
 
-            SplinterLandsClient client = new SplinterLandsClient();
-            var balances = client.GetTokenBalancesForPlayer("gloomster");
+   //         SplinterLandsClient client = new SplinterLandsClient();
+   //         var balances = client.GetTokenBalancesForPlayer("gloomster");
         }
 
         private void ListViewItem_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
