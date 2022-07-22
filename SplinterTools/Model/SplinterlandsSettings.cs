@@ -5,10 +5,10 @@ namespace SplinterTools.Model
 
 {
 
-    public class SplinterlandsSettings
-    {
-        public SplinterlandsSetting[] Property1 { get; set; }
-    }
+    //public class SplinterlandsSettings
+    //{
+    //    public SplinterlandsSetting[] seting { get; set; }
+    //}
 
     public class SplinterlandsSetting
     {

@@ -42,7 +42,7 @@ namespace SplinterTools
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Helpers.SplinterlandsData.splinterlandsSetting = Task.Run(() => new Processors.Splinterlands().GetSplinterlandsSetting()).Result;
+            Helpers.SplinterData.splinterlandsSetting = Task.Run(() => new Processors.Splinterlands().GetSplinterlandsSetting()).Result;
             GetSplinterData(0);
         }
 
@@ -75,8 +75,8 @@ namespace SplinterTools
                 var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(accountDetails[i].AccName);
 
 
-                int baseRshares = Helpers.SplinterlandsData.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].@base;
-                double multiplier = Helpers.SplinterlandsData.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
+                int baseRshares = Helpers.SplinterData.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].@base;
+                double multiplier = Helpers.SplinterData.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
                 int chests = 0;
                 int fp_limit = baseRshares;
 
@@ -89,9 +89,9 @@ namespace SplinterTools
 
 
 
-                string leagueWildName = Helpers.SplinterlandsData.splinterlandsSetting.leagues.modern[SplinterInfo.league].name;
-                string leagueModernName = Helpers.SplinterlandsData.splinterlandsSetting.leagues.modern[SplinterInfo.modern_league].name;
-                string splinter = Helpers.SplinterlandsData.splinterlandsSetting.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
+                string leagueWildName = Helpers.SplinterData.splinterlandsSetting.leagues.modern[SplinterInfo.league].name;
+                string leagueModernName = Helpers.SplinterData.splinterlandsSetting.leagues.modern[SplinterInfo.modern_league].name;
+                string splinter = Helpers.SplinterData.splinterlandsSetting.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
                 string questItems = QuestInfo[0].completed_items.ToString();
 
 
@@ -100,17 +100,17 @@ namespace SplinterTools
                 //Last 50 Matches Win rate modern
 
 
-                Helpers.SplinterlandsData.battles = Task.Run(() => new Processors.Splinterlands().GetRateSetting(accountDetails[i].AccName, "modern")).Result;
+                Helpers.SplinterData.battles = Task.Run(() => new Processors.Splinterlands().GetRateSetting(accountDetails[i].AccName, "modern")).Result;
 
                 int totalmodernWins = 0;
-                int totalmoderngames = Helpers.SplinterlandsData.battles.battles.Length;
+                int totalmoderngames = Helpers.SplinterData.battles.battles.Length;
                 
 
-                if (Helpers.SplinterlandsData.battles != null)
+                if (Helpers.SplinterData.battles != null)
                 {
                     for (int it = 0; it < totalmoderngames; it++)
                     {
-                        if (Helpers.SplinterlandsData.battles.battles[it].winner == accountDetails[i].AccName)
+                        if (Helpers.SplinterData.battles.battles[it].winner == accountDetails[i].AccName)
                         {
                             totalmodernWins++;
                         }
@@ -121,17 +121,17 @@ namespace SplinterTools
                 //Last 50 Matches Win rate wild
 
 
-                Helpers.SplinterlandsData.battles = Task.Run(() => new Processors.Splinterlands().GetRateSetting(accountDetails[i].AccName, "wild")).Result;
+                Helpers.SplinterData.battles = Task.Run(() => new Processors.Splinterlands().GetRateSetting(accountDetails[i].AccName, "wild")).Result;
 
                 int totalWildnWins = 0;
-                int totalWildgames = Helpers.SplinterlandsData.battles.battles.Length;
+                int totalWildgames = Helpers.SplinterData.battles.battles.Length;
 
 
-                if (Helpers.SplinterlandsData.battles != null)
+                if (Helpers.SplinterData.battles != null)
                 {
                     for (int it = 0; it < totalWildgames; it++)
                     {
-                        if (Helpers.SplinterlandsData.battles.battles[it].winner == accountDetails[i].AccName)
+                        if (Helpers.SplinterData.battles.battles[it].winner == accountDetails[i].AccName)
                         {
                             totalWildnWins++;
                         }

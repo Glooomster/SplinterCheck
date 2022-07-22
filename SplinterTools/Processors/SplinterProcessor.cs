@@ -9,11 +9,13 @@ namespace SplinterTools.Processors
     public class SplinterProcessor
     {
 
+        const string ApiUrl = "https://api2.splinterlands.com";
+
         public static async Task<SplinterModel> LoadSplinterInformation(string Name)
         {
 
 
-            string url = "https://game-api.splinterlands.com/players/details?name=" + Name;
+            string url = ApiUrl + "/players/details?name=" + Name;
 
             using HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url);
 
@@ -32,7 +34,7 @@ namespace SplinterTools.Processors
         {
 
 
-            string url = "https://game-api.splinterlands.com/players/quests?username=" + Name;
+            string url = ApiUrl + "/players/quests?username=" + Name;
 
             using HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url);
             {
@@ -54,7 +56,7 @@ namespace SplinterTools.Processors
         {
 
 
-            string url = "https://api2.splinterlands.com/market/active_rentals?renter=" + Name + "&offset=0&limit=5000";
+            string url = ApiUrl + "/market/active_rentals?renter=" + Name + "&offset=0&limit=5000";
 
             using HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url);
             {
