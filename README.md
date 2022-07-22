@@ -2,4 +2,6 @@
 
 Quick and easy dashboard for multi account overview. 
 
-# Splinter Tools
+## the WHY
+
+Tired of checking multiple accounts on different places. 
