@@ -38,11 +38,19 @@ Added
 
 
 
-## App functionality (future)
+## App functionality (close future :D )
 
+- Adding total DEC / SPS (Account Value) 
+- Season Rewards 
 - add extra info on cancelations 
-- what's app messaging for everyone 
+
 - let me know what else you think would be good ... 
+
+
+## App functionality (Somwhere in the view ....)
+
+- what's app messaging for everyone (we can talk about setting stuff up if needed)
+- Automatic rental renewal before expiration
 
 
 ## Contact 
