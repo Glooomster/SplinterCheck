@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SplinterTools.Model;
 
 
 namespace SplinterTools.Processors
@@ -60,6 +61,28 @@ namespace SplinterTools.Processors
                 if (response.IsSuccessStatusCode)
                 {
                     RentalModel[] result = await response.Content.ReadAsAsync<RentalModel[]>();
+
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+
+        public static async Task<BattlesModel[]> LoadWinRateInformation(string Name)
+        {
+
+
+            string url = "https://api2.splinterlands.com/battle/history?player=" + Name + "&format=modern";
+
+            using HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url);
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    BattlesModel[] result = await response.Content.ReadAsAsync<BattlesModel[]>();
 
                     return result;
                 }

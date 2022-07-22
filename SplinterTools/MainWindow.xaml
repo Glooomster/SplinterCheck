@@ -51,10 +51,16 @@
 				<GridView x:Name="ctlDataGrid" >
                     
 					<GridViewColumn Header=" Name " DisplayMemberBinding="{Binding Name}" />
-					<GridViewColumn Header=" Rating " DisplayMemberBinding="{Binding Rating}" />
-					<GridViewColumn Header=" Capture Rate " DisplayMemberBinding="{Binding Capture_rate}" />
-					<GridViewColumn Header=" CP "  DisplayMemberBinding="{Binding CollectionPower}" />
-                    <GridViewColumn Header=" League "  DisplayMemberBinding="{Binding League}" />
+                    <GridViewColumn Header=" Modern League "  DisplayMemberBinding="{Binding LeagueModern}" />
+                    <GridViewColumn Header=" Rating " DisplayMemberBinding="{Binding RatingModern}" />
+                    <GridViewColumn Header=" Last 50 "  DisplayMemberBinding="{Binding ModernLast50}" />
+                    <GridViewColumn Header=" Overall "  DisplayMemberBinding="{Binding ModernWinRate}" />
+                    <GridViewColumn Header=" Wild League "  DisplayMemberBinding="{Binding LeagueWild}" />
+                    <GridViewColumn Header=" Rating " DisplayMemberBinding="{Binding RatingWild}" />
+                    <GridViewColumn Header=" Last 50 "  DisplayMemberBinding="{Binding WildLast50}" />
+                    <GridViewColumn Header=" Overall "  DisplayMemberBinding="{Binding WildWinRate}" />
+                    <GridViewColumn Header=" CR " DisplayMemberBinding="{Binding Capture_rate}" />
+                    <GridViewColumn Header=" CP "  DisplayMemberBinding="{Binding CollectionPower}" />
                     <GridViewColumn Header=" Quest "  DisplayMemberBinding="{Binding QuestTitle}" />
                     <GridViewColumn Header=" Focus Win "  DisplayMemberBinding="{Binding Completed_items}" />
                     <GridViewColumn Header=" Chests "  DisplayMemberBinding="{Binding Earned_Chests}" />
@@ -63,7 +69,7 @@
 					<!--<GridViewColumn Header=" Finish " DisplayMemberBinding="{Binding Claim_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />-->
 					<GridViewColumn Header=" Cancellation "  DisplayMemberBinding="{Binding RentCancel}" />
 					<!--<GridViewColumn Header=" Warning "  DisplayMemberBinding="{Binding Warning}" />-->
-					<GridViewColumn Header=" Test "  DisplayMemberBinding="{Binding Test}" />
+					<!--<GridViewColumn Header=" Test "  DisplayMemberBinding="{Binding Test}" />-->
 				</GridView>
 			</ListView.View>
 		</ListView>
@@ -94,15 +100,16 @@
 				/>
 
         <Button x:Name="BtnEnableWhatsUp" 
+                Content="WhatsUp"
 				Grid.Row="3"
 				HorizontalAlignment="Left" 
 				VerticalAlignment="Center" 
 				Height="30" 
-				Width="60" 
+				Width="80" 
 				Click="BtnEnableWhatsUp_Click" 
-				Margin="360,5,0,5"
-                Background="Green">
-            <Image Source="/Resources/whatsup.png" />
+				Margin="360,5,0,5">
+            <!--Background="Green">
+            <Image Source="/Resources/whatsup.png" />-->
         </Button>
 
         <Button x:Name="BtnTestButton" 

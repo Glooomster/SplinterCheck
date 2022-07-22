@@ -42,7 +42,7 @@ namespace SplinterTools
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Helpers.SplinterlandsData.splinterlandsSettings = Task.Run(() => new Processors.Splinterlands().GetSplinterlandsSettings()).Result;
+            Helpers.SplinterlandsData.splinterlandsSetting = Task.Run(() => new Processors.Splinterlands().GetSplinterlandsSetting()).Result;
             GetSplinterData(0);
         }
 
@@ -74,8 +74,9 @@ namespace SplinterTools
                 var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(accountDetails[i].AccName);
                 var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(accountDetails[i].AccName);
 
-                int baseRshares = Helpers.SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].@_base;
-                double multiplier = Helpers.SplinterlandsData.splinterlandsSettings.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
+
+                int baseRshares = Helpers.SplinterlandsData.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].@base;
+                double multiplier = Helpers.SplinterlandsData.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
                 int chests = 0;
                 int fp_limit = baseRshares;
 
@@ -88,13 +89,58 @@ namespace SplinterTools
 
 
 
-                string leagueName = "test"; //Helpers.SplinterlandsData.splinterlandsSettings.leagues[SplinterInfo.league].name;
+                string leagueWildName = Helpers.SplinterlandsData.splinterlandsSetting.leagues.modern[SplinterInfo.league].name;
+                string leagueModernName = Helpers.SplinterlandsData.splinterlandsSetting.leagues.modern[SplinterInfo.modern_league].name;
+                string splinter = Helpers.SplinterlandsData.splinterlandsSetting.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
+                string questItems = QuestInfo[0].completed_items.ToString();
 
 
-                string splinter = Helpers.SplinterlandsData.splinterlandsSettings.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
 
-                string questItems = QuestInfo[0].completed_items.ToString(); 
 
+                //Last 50 Matches Win rate modern
+
+
+                Helpers.SplinterlandsData.battles = Task.Run(() => new Processors.Splinterlands().GetRateSetting(accountDetails[i].AccName, "modern")).Result;
+
+                int totalmodernWins = 0;
+                int totalmoderngames = Helpers.SplinterlandsData.battles.battles.Length;
+                
+
+                if (Helpers.SplinterlandsData.battles != null)
+                {
+                    for (int it = 0; it < totalmoderngames; it++)
+                    {
+                        if (Helpers.SplinterlandsData.battles.battles[it].winner == accountDetails[i].AccName)
+                        {
+                            totalmodernWins++;
+                        }
+                    }
+                }
+
+
+                //Last 50 Matches Win rate wild
+
+
+                Helpers.SplinterlandsData.battles = Task.Run(() => new Processors.Splinterlands().GetRateSetting(accountDetails[i].AccName, "wild")).Result;
+
+                int totalWildnWins = 0;
+                int totalWildgames = Helpers.SplinterlandsData.battles.battles.Length;
+
+
+                if (Helpers.SplinterlandsData.battles != null)
+                {
+                    for (int it = 0; it < totalWildgames; it++)
+                    {
+                        if (Helpers.SplinterlandsData.battles.battles[it].winner == accountDetails[i].AccName)
+                        {
+                            totalWildnWins++;
+                        }
+                    }
+                }
+
+
+
+                //rental check
                 int rentCancelNumber = 0;
 
                 if (RentalInfo != null)
@@ -103,8 +149,8 @@ namespace SplinterTools
                     {
                         if (RentalInfo[it].cancel_date != null)
                         {
-                            System.Diagnostics.Debug.Print(RentalInfo[it].cancel_date.ToString());
-                            System.Diagnostics.Debug.Print(it.ToString());
+                            //System.Diagnostics.Debug.Print(RentalInfo[it].cancel_date.ToString());
+                            //System.Diagnostics.Debug.Print(it.ToString());
                             rentCancelNumber++;
                         }
                     }
@@ -118,20 +164,20 @@ namespace SplinterTools
 
 
                     warningMessage = "Power Missing: " + (accountDetails[i].Power - SplinterInfo.collection_power).ToString() + "\n";
-                    OneListItem.Background = Brushes.Coral;
+                    //OneListItem.Background = Brushes.Coral;
 
                 }
 
                 if (QuestInfo[0].created_date < DateTime.UtcNow.AddHours(-24))
                 {
                     warningMessage = warningMessage + "Last Quest: \n" + QuestInfo[0].created_date + "\n"; // (DateTime.UtcNow.AddHours(-2) - QuestInfo[0].created_date).Hours.ToString() + "\n";
-                    OneListItem.Background = Brushes.Coral;
+                    //OneListItem.Background = Brushes.Coral;
                 }
 
                 if (rentCancelNumber > 0)
                 {
                     warningMessage = warningMessage + "Cancelations: " + rentCancelNumber.ToString() + "\n";
-                    OneListItem.Background = Brushes.Coral;
+                    //OneListItem.Background = Brushes.Coral;
                 }
                 //else warningMessage = " N/A ";
 
@@ -147,10 +193,17 @@ namespace SplinterTools
                 {
                     RentCancel = rentCancelNumber,
                     Name = SplinterInfo.name,
-                    Rating = SplinterInfo.rating,
+                    RatingModern = SplinterInfo.modern_rating,
+                    LeagueModern = leagueModernName,
+                    ModernWinRate = (SplinterInfo.modern_wins * 100.00 / SplinterInfo.modern_battles).ToString("#") + "%",
+                    ModernLast50 = (totalmodernWins * 100.00 / totalmoderngames).ToString("#") + "%",
+                    RatingWild = SplinterInfo.rating,
+                    LeagueWild = leagueWildName,
+                    WildWinRate = (SplinterInfo.wins * 100.00 / SplinterInfo.battles).ToString("#") + "%",
+                    WildLast50 = (totalWildnWins * 100.00 / totalWildgames).ToString("#") + "%",
                     Capture_rate = SplinterInfo.capture_rate / 100,
                     CollectionPower = SplinterInfo.collection_power,
-                    League = leagueName,
+
                     QuestTitle = splinter,
                     Completed_items = questItems,
                     Earned_Chests = chests,
@@ -158,9 +211,7 @@ namespace SplinterTools
                     Created_date = QuestInfo[0].created_date,
                     Reward_qty = QuestInfo[0].reward_qty,
                     //Warning = warningMessage,
-                    Test = +testr,
-
-
+                    //Test = +testr,
 
                 };
 

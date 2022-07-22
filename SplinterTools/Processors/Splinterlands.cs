@@ -22,21 +22,34 @@ namespace SplinterTools.Processors
         const string SP_TRANSACTION_DETAILS = "/transactions/lookup?trx_id=";
         const string SP_MATCH_DETAILS = "/battle/status?id=";
         const string SP_MATCH_ENEMY_PICK = "/players/outstanding_match?username=";
-        const string SP_MATCH_RESULTS = "/battle/history2?player=";
+        const string SP_MATCH_RESULTS = "/battle/history?player=";
         const string SP_ACCESS_TOKEN = "/players/login?name=@@_username_@@&ref=&browser_id=@@_bid_@@&session_id=@@_sid_@@&sig=@@_signature_@@&ts=@@_timestamp_@@";
         const string SP_SPLINTERLANDS_CARDS = "/cards/get_details";
         const string SP_SPLINTERLANDS_SETTINGS = "/settings";
 
-        public async Task<SplinterlandsSettings> GetSplinterlandsSettings()
+        public async Task<SplinterlandsSetting> GetSplinterlandsSetting()
         {
             string result = "";
-            HttpResponseMessage response =  await ApiHelper.ApiClient.GetAsync(API_URL + SP_SPLINTERLANDS_SETTINGS);
+            HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(API_URL + SP_SPLINTERLANDS_SETTINGS);
             if (response.IsSuccessStatusCode)
             {
                 result = await response.Content.ReadAsStringAsync();
             }
-            return JsonConvert.DeserializeObject<SplinterlandsSettings>(result);
+            return JsonConvert.DeserializeObject<SplinterlandsSetting>(result);
         }
+
+
+        public async Task<BattlesModel> GetRateSetting(string username, string format)
+        {
+            string result = "";
+            HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(API_URL + SP_MATCH_RESULTS + username + "&format=" + format);
+            if (response.IsSuccessStatusCode)
+            {
+                result = await response.Content.ReadAsStringAsync();
+            }
+            return JsonConvert.DeserializeObject<BattlesModel>(result);
+        }
+
 
 
 

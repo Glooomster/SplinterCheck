@@ -4,6 +4,8 @@ namespace SplinterTools.Helpers
 {
     public static class SplinterlandsData
     {
-        public static SplinterlandsSettings splinterlandsSettings = new();
+        public static SplinterlandsSetting splinterlandsSetting = new();
+        public static BattlesModel battles = new();
+
     }
 }

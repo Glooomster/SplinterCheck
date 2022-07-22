@@ -5,12 +5,12 @@ namespace SplinterTools.Model
 
 {
 
-    public class SplinterlandsSetting
+    public class SplinterlandsSettings
     {
-        public SplinterlandsSettings[] Property1 { get; set; }
+        public SplinterlandsSetting[] Property1 { get; set; }
     }
 
-    public class SplinterlandsSettings
+    public class SplinterlandsSetting
     {
         public string asset_url { get; set; }
         public float gold_percent { get; set; }
@@ -190,7 +190,8 @@ namespace SplinterTools.Model
         public int alpha_burn_bonus { get; set; }
         public int pool_size_blocks { get; set; }
         public float ecr_regen_rate { get; set; }
-        public float ecr_reduction_rate { get; set; }
+
+   //     public float ecr_reduction_rate { get; set; }
         public int promo_burn_bonus { get; set; }
         public float alpha_bonus { get; set; }
         public string prize_pool_account { get; set; }
@@ -381,14 +382,14 @@ namespace SplinterTools.Model
 
     public class Quest
     {
-        public int _base { get; set; }
+        public int @base { get; set; }
         public float step_multiplier { get; set; }
         public int max { get; set; }
     }
 
     public class Season
     {
-        public int _base { get; set; }
+        public int @base { get; set; }
         public float step_multiplier { get; set; }
         public int max { get; set; }
     }
