@@ -9,7 +9,10 @@ Quick and easy tool to quickly show multi account overview.
 Started Splinterlands as many of us little bit later than I would love to :D
 I pushed my account into Bronze and slowly tried to push to Silver. When I thought that I know it all I created extra account and few weeks later second one.
 
-Now running 4 account splinterland manager is just too much time consuming so I started to created quick dashboard to quickly show info that I need. 
+Now running 4 accounts and feel list splinterland manager. I felt I need to keep checking all the time multiple websites to get same info.
+So I started developing in my spare timme this tool. 
+Please let me know if you have some ideas / improvments and so on. 
+
 
 ## Updates
 
