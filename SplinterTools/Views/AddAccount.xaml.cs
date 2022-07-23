@@ -26,9 +26,18 @@ namespace SplinterTools
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)
         {
-            Processors.AccountDetailsProcessor.updateAccounts(txtAccount.Text, Convert.ToInt32(txtPOwer.Text));
-            SaveData.Invoke(this);
-            this.Close();
+            if (txtAccount.Text == "" || txtPOwer.Text == "")
+            {
+                this.Close();
+            }
+            else
+            {
+                Processors.AccountDetailsProcessor.updateAccounts(txtAccount.Text, Convert.ToInt32(txtPOwer.Text));
+                SaveData.Invoke(this);
+                this.Close();
+            }
+
+
         }
     }
 }

@@ -142,12 +142,12 @@
 				  Width="100" 
 				  
 				  >
-			<ComboBoxItem IsSelected="True">10 (sec)</ComboBoxItem>
-			<ComboBoxItem>30 (sec)</ComboBoxItem>
-			<ComboBoxItem>1 (min)</ComboBoxItem>
-			<ComboBoxItem>5 (min)</ComboBoxItem>
-			<ComboBoxItem>10 (min)</ComboBoxItem>
-		</ComboBox>
+			<ComboBoxItem IsSelected="True">1 (min)</ComboBoxItem>
+            <ComboBoxItem>5 (min)</ComboBoxItem>
+            <ComboBoxItem>10 (min)</ComboBoxItem>
+            <ComboBoxItem>30 (min)</ComboBoxItem>
+            <ComboBoxItem>1 (hour)</ComboBoxItem>
+        </ComboBox>
 
 
     </Grid>

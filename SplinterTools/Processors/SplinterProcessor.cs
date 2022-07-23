@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SplinterTools.Model;
 
 
@@ -10,6 +11,18 @@ namespace SplinterTools.Processors
     {
 
         const string ApiUrl = "https://api2.splinterlands.com";
+
+
+        public async Task<SplinterlandsSetting> LoadSplinterlandsSetting()
+        {
+            string result = "";
+            HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(ApiUrl + "/settings");
+            if (response.IsSuccessStatusCode)
+            {
+                result = await response.Content.ReadAsStringAsync();
+            }
+            return JsonConvert.DeserializeObject<SplinterlandsSetting>(result);
+        }
 
         public static async Task<SplinterModel> LoadSplinterInformation(string Name)
         {
@@ -55,7 +68,6 @@ namespace SplinterTools.Processors
         public static async Task<RentalModel[]> LoadRentalInformation(string Name)
         {
 
-
             string url = ApiUrl + "/market/active_rentals?renter=" + Name + "&offset=0&limit=5000";
 
             using HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url);
@@ -73,26 +85,23 @@ namespace SplinterTools.Processors
             }
         }
 
-
-        public static async Task<BattlesModel[]> LoadWinRateInformation(string Name)
+        public async Task<BattlesModel> LoadBattleHiistory(string username, string format)
         {
-
-
-            string url = "https://api2.splinterlands.com/battle/history?player=" + Name + "&format=modern";
-
-            using HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url);
+            string result = "";
+            HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(ApiUrl + "/battle/history?player=" + username + "&format=" + format);
+            if (response.IsSuccessStatusCode)
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    BattlesModel[] result = await response.Content.ReadAsAsync<BattlesModel[]>();
+                result = await response.Content.ReadAsStringAsync();
 
-                    return result;
-                }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
             }
+            else
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
+            return JsonConvert.DeserializeObject<BattlesModel>(result);
         }
+
+
+
     }
 }

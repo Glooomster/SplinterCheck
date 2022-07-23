@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,31 +7,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Threading;
-
 
 
 namespace SplinterTools
 {
 
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
-
         public string fileOfReportInXML = Directory.GetCurrentDirectory() + "/Files/AppConfig.json";
-
         public string warningMessageTotal = "";
         public string sentWhatsUpMessage = "";
-
         public DispatcherTimer dispatcherTimer = new();
         public int TestValue;
-
         public Boolean enableWhatsup = false;
-
-
 
 
         public MainWindow()
@@ -39,28 +30,28 @@ namespace SplinterTools
             ApiHelper.InitializeClient();
         }
 
-
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Helpers.SplinterData.splinterlandsSetting = Task.Run(() => new Processors.Splinterlands().GetSplinterlandsSetting()).Result;
+            bool checkSecurity = Processors.MessageProcessor.CheckSecurityDetails();
+
+            if (checkSecurity)
+            {
+                BtnEnableWhatsUp.IsEnabled = false;
+            };
+
+
+            Helpers.SpDataHelper.splinterlandsSetting = Task.Run(() => new Processors.SplinterProcessor().LoadSplinterlandsSetting()).Result;
             GetSplinterData(0);
         }
 
         List<ListViewItem> UserModelList = new List<ListViewItem>();
 
-
-
         public async void GetSplinterData(int testr)
         {
-
-
-
+            
             var accountDetails = Processors.AccountDetailsProcessor.LoadAccountsObject();
 
-
             UserModelList.Clear();
-
-
 
 
             for (int i = 0; i < accountDetails.Count; i++)
@@ -75,8 +66,8 @@ namespace SplinterTools
                 var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(accountDetails[i].AccName);
 
 
-                int baseRshares = Helpers.SplinterData.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].@base;
-                double multiplier = Helpers.SplinterData.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
+                int baseRshares = Helpers.SpDataHelper.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].@base;
+                double multiplier = Helpers.SpDataHelper.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].step_multiplier;
                 int chests = 0;
                 int fp_limit = baseRshares;
 
@@ -87,58 +78,47 @@ namespace SplinterTools
                     fp_limit = Convert.ToInt32(baseRshares + fp_limit * multiplier);
                 }
 
-
-
-                string leagueWildName = Helpers.SplinterData.splinterlandsSetting.leagues.modern[SplinterInfo.league].name;
-                string leagueModernName = Helpers.SplinterData.splinterlandsSetting.leagues.modern[SplinterInfo.modern_league].name;
-                string splinter = Helpers.SplinterData.splinterlandsSetting.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
+                string leagueWildName = Helpers.SpDataHelper.splinterlandsSetting.leagues.modern[SplinterInfo.league].name;
+                string leagueModernName = Helpers.SpDataHelper.splinterlandsSetting.leagues.modern[SplinterInfo.modern_league].name;
+                string splinter = Helpers.SpDataHelper.splinterlandsSetting.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
                 string questItems = QuestInfo[0].completed_items.ToString();
-
-
 
 
                 //Last 50 Matches Win rate modern
 
-
-                Helpers.SplinterData.battles = Task.Run(() => new Processors.Splinterlands().GetRateSetting(accountDetails[i].AccName, "modern")).Result;
+                Helpers.SpDataHelper.battles = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHiistory(accountDetails[i].AccName, "modern")).Result;
 
                 int totalmodernWins = 0;
-                int totalmoderngames = Helpers.SplinterData.battles.battles.Length;
+                int totalmoderngames = Helpers.SpDataHelper.battles.battles.Length;
                 
-
-                if (Helpers.SplinterData.battles != null)
+                if (Helpers.SpDataHelper.battles != null)
                 {
                     for (int it = 0; it < totalmoderngames; it++)
                     {
-                        if (Helpers.SplinterData.battles.battles[it].winner == accountDetails[i].AccName)
+                        if (Helpers.SpDataHelper.battles.battles[it].winner == accountDetails[i].AccName)
                         {
                             totalmodernWins++;
                         }
                     }
                 }
 
-
                 //Last 50 Matches Win rate wild
 
-
-                Helpers.SplinterData.battles = Task.Run(() => new Processors.Splinterlands().GetRateSetting(accountDetails[i].AccName, "wild")).Result;
+                Helpers.SpDataHelper.battles = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHiistory(accountDetails[i].AccName, "wild")).Result;
 
                 int totalWildnWins = 0;
-                int totalWildgames = Helpers.SplinterData.battles.battles.Length;
+                int totalWildgames = Helpers.SpDataHelper.battles.battles.Length;
 
-
-                if (Helpers.SplinterData.battles != null)
+                if (Helpers.SpDataHelper.battles != null)
                 {
                     for (int it = 0; it < totalWildgames; it++)
                     {
-                        if (Helpers.SplinterData.battles.battles[it].winner == accountDetails[i].AccName)
+                        if (Helpers.SpDataHelper.battles.battles[it].winner == accountDetails[i].AccName)
                         {
                             totalWildnWins++;
                         }
                     }
                 }
-
-
 
                 //rental check
                 int rentCancelNumber = 0;
@@ -149,15 +129,10 @@ namespace SplinterTools
                     {
                         if (RentalInfo[it].cancel_date != null)
                         {
-                            //System.Diagnostics.Debug.Print(RentalInfo[it].cancel_date.ToString());
-                            //System.Diagnostics.Debug.Print(it.ToString());
                             rentCancelNumber++;
                         }
                     }
                 }
-
-
-
 
                 if (SplinterInfo.collection_power < accountDetails[i].Power)
                 {
@@ -187,8 +162,6 @@ namespace SplinterTools
                     warningMessageTotal = warningMessageTotal + SplinterInfo.name + ":\n" + warningMessage + "\n";
                 }
 
-
-
                 OneListItem.Content = new Helpers.UserModel()
                 {
                     RentCancel = rentCancelNumber,
@@ -215,15 +188,9 @@ namespace SplinterTools
 
                 };
 
-
-
-
-
                 UserModelList.Add(OneListItem);
 
             }
-
-
 
             if (warningMessageTotal.Length > 0)
             {
@@ -240,7 +207,6 @@ namespace SplinterTools
                     sentWhatsUpMessage = warningMessageTotal; 
 
                 }
-
                 
                 //clear the message
                 warningMessageTotal = "";
@@ -249,11 +215,7 @@ namespace SplinterTools
             SplinterList.ItemsSource = UserModelList;
             SplinterList.Items.Refresh();
 
-
         }
-
-
-
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
@@ -273,16 +235,10 @@ namespace SplinterTools
 
             }
 
-
-
-
-
             BtnRefresh.IsEnabled = false;
             cmbRefresh.IsEnabled = false;
 
         }
-
-
 
         protected void DispatcherTimer_Tick(object sender, EventArgs e)
         {
