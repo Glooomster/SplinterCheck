@@ -135,6 +135,27 @@ namespace SplinterCheck.Processors
         }
 
 
+        public static async Task<BalanceModel[]> LoadBalances(string Name)
+        {
+
+            string url = ApiUrl + "/players/balances?username=" + Name;
+
+            using HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url);
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    BalanceModel[] result = await response.Content.ReadAsAsync<BalanceModel[]>();
+
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+
+
 
     }
 }

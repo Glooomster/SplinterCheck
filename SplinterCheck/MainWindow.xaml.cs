@@ -49,7 +49,7 @@ namespace SplinterCheck
 
         public async void GetSplinterData(int testr)
         {
-            
+
             var accountDetails = Processors.AccountDetailsProcessor.LoadAccountsObject();
 
             UserModelList.Clear();
@@ -65,6 +65,8 @@ namespace SplinterCheck
                 var SplinterInfo = await Processors.SplinterProcessor.LoadSplinterInformation(accountDetails[i].AccName);
                 var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(accountDetails[i].AccName);
                 var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(accountDetails[i].AccName);
+                //preped for ballance
+                var ballance = await Processors.SplinterProcessor.LoadBalances(accountDetails[i].AccName);
 
 
                 int baseRshares = Helpers.SpDataHelper.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].@base;
@@ -142,6 +144,33 @@ namespace SplinterCheck
                     }
                 }
 
+                // get potions
+
+
+                string goldPotions = "";
+                string legendaryPotions = "";
+
+                if (ballance != null)
+                {
+
+                    for (int it = 0; it < ballance.Length; it++)
+                    {
+                        if (ballance[it].token == "GOLD")
+                        {
+                            goldPotions = ballance[it].balance.ToString();
+                        }
+                        if (ballance[it].token == "LEGENDARY")
+                        {
+                            legendaryPotions = ballance[it].balance.ToString();
+                        }
+                    }
+                }
+   
+
+
+
+                // warnings
+
                 if (SplinterInfo.collection_power < accountDetails[i].Power)
                 {
 
@@ -170,6 +199,12 @@ namespace SplinterCheck
                     warningMessageTotal = warningMessageTotal + SplinterInfo.name + ":\n" + warningMessage + "\n";
                 }
 
+
+
+
+                // Quests
+
+
                 OneListItem.Content = new UserModel()
                 {
                     RentCancel = rentCancelNumber,
@@ -186,13 +221,14 @@ namespace SplinterCheck
                     WildLast50Dec = Math.Round(WildDec, 2),
                     Capture_rate = SplinterInfo.capture_rate / 100,
                     CollectionPower = SplinterInfo.collection_power,
-
                     QuestTitle = splinter,
                     Completed_items = questItems,
                     Earned_Chests = chests,
                     Rshares = QuestInfo[0].rshares,
                     Created_date = QuestInfo[0].created_date,
                     Reward_qty = QuestInfo[0].reward_qty,
+                    potions = goldPotions + " / " + legendaryPotions,
+
                     //Warning = warningMessage,
                     //Test = +testr,
 
@@ -213,11 +249,11 @@ namespace SplinterCheck
                     {
                         Processors.MessageProcessor.SendMessage(warningMessageTotal);
                     }
-                        
-                    sentWhatsUpMessage = warningMessageTotal; 
+
+                    sentWhatsUpMessage = warningMessageTotal;
 
                 }
-                
+
                 //clear the message
                 warningMessageTotal = "";
             }
@@ -275,8 +311,8 @@ namespace SplinterCheck
         private void BtnTestButton_Click(object sender, RoutedEventArgs e)
         {
 
-   //         SplinterLandsClient client = new SplinterLandsClient();
-   //         var balances = client.GetTokenBalancesForPlayer("gloomster");
+            //         SplinterLandsClient client = new SplinterLandsClient();
+            //         var balances = client.GetTokenBalancesForPlayer("gloomster");
         }
 
         private void ListViewItem_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -332,7 +368,7 @@ namespace SplinterCheck
 
         private void SaveData_AddAccount(AddAccount addNewAccount)
         {
-            
+
 
             GetSplinterData(0);
         }
