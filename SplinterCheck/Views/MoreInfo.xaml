@@ -1,0 +1,32 @@
+﻿<Window x:Class="SplinterCheck.MoreInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SplinterCheck"
+        mc:Ignorable="d"
+        Title="More Info" Height="285" Width="400" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140*"></RowDefinition>
+            <RowDefinition Height="50*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*"></ColumnDefinition>
+            <ColumnDefinition Width="150*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="More Details" HorizontalAlignment="Left" FontSize="20" Grid.Column="0" Grid.ColumnSpan="2" Width="150"></Label>
+
+        <Label x:Name="lblAccount" Grid.Row="0" HorizontalContentAlignment="Right" Content="Account" HorizontalAlignment="Left" Margin="10,70,0,0"></Label>
+        <TextBox x:Name="TxbAccount" Grid.Column="1" HorizontalAlignment="Left" Margin="10,70,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+
+        <Label x:Name="lblPower" Grid.Row="0" HorizontalContentAlignment="Right" Content="Power" HorizontalAlignment="Left" Margin="10,110,0,0"></Label>
+        <TextBox x:Name="TxtPower" Grid.Column="1" HorizontalAlignment="Left" Margin="10,110,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+
+        <Button x:Name="BtnPrev" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="Prev" Width="50" Height="25" Margin="10,0,0,0" Click="BtnPrev_Click"></Button>
+        <Button x:Name="BtnNext" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="Next" Width="50" Height="25" Margin="70,0,0,0" Grid.ColumnSpan="2" Click="BtnNext_Click"></Button>
+
+    </Grid>
+</Window>
