@@ -8,7 +8,7 @@ using SplinterCheck.Library.Models;
 
 namespace SplinterCheck.Processors
 {
-    public class SplinterProcessor
+    public class SplinterProcessor 
     {
         
 
@@ -17,22 +17,49 @@ namespace SplinterCheck.Processors
 
 
 
-        private async Task<T> GetClientResponseAsync<T>(string endPoint) where T : new()
-        {
-
-            var client = new RestClient(ApiUrl);
-            client.UserAgent = UserAgent;
-
-            var request = new RestRequest(endPoint, Method.GET, DataFormat.Json);
-            var response = await client.ExecuteAsync(request);
-
-            return JsonConvert.DeserializeObject<T>(response.Content) ?? new T();
 
 
-        }
+        //public async Task<PlayerBattles> GetBattlesForPlayerAsync(string playerName)
+        //{
+
+        //    var url = ApiUrl + "/battle/history?player=" + playerName;
+        //    //var request = new RestRequest(Method.POST);
+        //   // var client = new RestClient(url);
+
+
+        //    var client = new RestClient(ApiUrl);
+
+        //    var request = new RestRequest(Method.GET);
+        //    IRestResponse response = client.Execute(request);
+        //    var battles = JsonConvert.DeserializeObject<PlayerBattles>(response.Content);
+
+        //    return new PlayerBattles();
+
+
+        //    //HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(ApiUrl + "/battle/history?player=" + playerName);
+
+        //    //if (response.IsSuccessStatusCode)
+        //    //{
+        //    //    string result = await response.Content.ReadAsStringAsync();
+
+        //    //}
+        //    //else
+        //    //{
+        //    //    throw new Exception(response.ReasonPhrase);
+        //    //}
+        //    //return new PlayerBattles() { Player = playerName };
+        //}
+
+
+
+
+
+
+
+
         //public async Task<SplinterlandsSetting> LoadSplinterlandsSetting()
         //{
-            
+
         //    var set = new SplinterlandsSetting()
         //    {
         //        SplinterlandsSetting = await GetClientResponseAsync<Bat_Event_List<
@@ -56,6 +83,8 @@ namespace SplinterCheck.Processors
             }
             return JsonConvert.DeserializeObject<SplinterlandsSetting>(result);
         }
+
+
 
         public static async Task<SplinterModel> LoadSplinterInformation(string Name)
         {

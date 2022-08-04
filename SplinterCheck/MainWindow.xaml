@@ -26,8 +26,15 @@
 
 		<!--<DataGrid x:Name="dbGrid" Grid.Row="0" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,0,0" Grid.RowSpan="1"></DataGrid>-->
 
-        <ListView Grid.Row="1" Name="SplinterList" HorizontalAlignment="Center" Width="Auto" Height="Auto" FontSize="15" FontFamily="Arial" FontWeight="Normal" 
-                  d:ItemsSource="{d:SampleData}" >
+        <ListView Grid.Row="1" 
+                  Name="SplinterList" 
+                  HorizontalAlignment="Center" 
+                  Width="Auto" Height="Auto" 
+                  FontSize="15" 
+                  FontFamily="Arial" 
+                  FontWeight="Normal" 
+                  d:ItemsSource="{d:SampleData}" 
+                  >
             <!--BorderThickness="2,2,2,2"-->
             <ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
@@ -50,10 +57,10 @@
 			<ListView.View>
 				<GridView x:Name="ctlDataGrid" >
                     
-					<GridViewColumn Header=" Name " DisplayMemberBinding="{Binding Name}" />
+					<GridViewColumn Header=" Name "  DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header=" CP "  DisplayMemberBinding="{Binding CollectionPower}" />
                     <GridViewColumn Header=" CR " DisplayMemberBinding="{Binding Capture_rate}" />
-                    <GridViewColumn Header=" Gold / Leg "  DisplayMemberBinding="{Binding potions}" />
+                    <GridViewColumn Header=" Gold / Leg "  DisplayMemberBinding="{Binding Potions}" />
                     <GridViewColumn Header=" Quest "  DisplayMemberBinding="{Binding QuestTitle}" />
                     <GridViewColumn Header=" Focus Win "  DisplayMemberBinding="{Binding Completed_items}" />
                     <GridViewColumn Header=" Chests "  DisplayMemberBinding="{Binding Earned_Chests}" />
@@ -67,16 +74,9 @@
                     <GridViewColumn Header=" Last 50 DEC "  DisplayMemberBinding="{Binding WildLast50Dec}" />
                     <GridViewColumn Header=" Last 50 "  DisplayMemberBinding="{Binding WildLast50}" />
                     <GridViewColumn Header=" Overall "  DisplayMemberBinding="{Binding WildWinRate}" />
-
-
-
-                    <!--<GridViewColumn Header=" Rshares "  DisplayMemberBinding="{Binding Rshares}" />-->
                     <GridViewColumn Header=" Start(UTC) "  DisplayMemberBinding="{Binding Created_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />
-					<!--<GridViewColumn Header=" Finish " DisplayMemberBinding="{Binding Claim_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />-->
-					<GridViewColumn Header=" Cancellation "  DisplayMemberBinding="{Binding RentCancel}" />
-					<!--<GridViewColumn Header=" Warning "  DisplayMemberBinding="{Binding Warning}" />-->
-					<!--<GridViewColumn Header=" Test "  DisplayMemberBinding="{Binding Test}" />-->
-				</GridView>
+                    <GridViewColumn Header=" Cancellation "  DisplayMemberBinding="{Binding RentCancel}"/>
+                </GridView>
 			</ListView.View>
 		</ListView>
 

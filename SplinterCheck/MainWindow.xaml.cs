@@ -9,7 +9,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using SplinterCheck.Library.Models;
-
+using SplinterCheck.Helpers;
+using SplinterCheck.Processors;
 
 namespace SplinterCheck
 {
@@ -55,18 +56,19 @@ namespace SplinterCheck
             UserModelList.Clear();
 
 
-            for (int i = 0; i < accountDetails.Count; i++)
+            //for (int i = 0; i < accountDetails.Count; i++)
+            foreach (var account in accountDetails)
+
             {
 
                 ListViewItem OneListItem = new ListViewItem();
 
                 string warningMessage = "";
 
-                var SplinterInfo = await Processors.SplinterProcessor.LoadSplinterInformation(accountDetails[i].AccName);
-                var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(accountDetails[i].AccName);
-                var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(accountDetails[i].AccName);
-                //preped for ballance
-                var ballance = await Processors.SplinterProcessor.LoadBalances(accountDetails[i].AccName);
+                var SplinterInfo = await Processors.SplinterProcessor.LoadSplinterInformation(account.AccName);
+                var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(account.AccName);
+                var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(account.AccName);
+                var ballance = await Processors.SplinterProcessor.LoadBalances(account.AccName);
 
 
                 int baseRshares = Helpers.SpDataHelper.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].@base;
@@ -81,53 +83,73 @@ namespace SplinterCheck
                     fp_limit = Convert.ToInt32(baseRshares + fp_limit * multiplier);
                 }
 
-                string leagueWildName = Helpers.SpDataHelper.splinterlandsSetting.leagues.modern[SplinterInfo.league].name;
-                string leagueModernName = Helpers.SpDataHelper.splinterlandsSetting.leagues.modern[SplinterInfo.modern_league].name;
+                string leagueWildName = SpDataHelper.splinterlandsSetting.leagues.modern[SplinterInfo.league].name;
+                string leagueModernName = SpDataHelper.splinterlandsSetting.leagues.modern[SplinterInfo.modern_league].name;
                 string splinter = Helpers.SpDataHelper.splinterlandsSetting.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
                 string questItems = QuestInfo[0].completed_items.ToString();
+
+
+           
+
 
 
                 //Last 50 Matches Win rate modern
 
 
-                Helpers.SpDataHelper.battles = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(accountDetails[i].AccName, "modern")).Result;
+                Helpers.SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(account.AccName, "modern")).Result;
 
 
                 int totalmodernWins = 0;
-                int totalmoderngames = Helpers.SpDataHelper.battles.battles.Length;
+                int totalmoderngames = Helpers.SpDataHelper.battlesClass.battles.Length;
                 double modernDec = 0;
 
 
-                if (Helpers.SpDataHelper.battles != null)
+                if (Helpers.SpDataHelper.battlesClass != null)
                 {
-                    for (int it = 0; it < totalmoderngames; it++)
+                    //for  (int it = 0; it < totalmoderngames; it++)
+                    //{
+                    //    if (Helpers.SpDataHelper.battles.battles[it].winner == accountDetails[i].AccName)
+                    //    {
+                    //        totalmodernWins++;
+                    //        modernDec = modernDec + Convert.ToDouble(Helpers.SpDataHelper.battles.battles[it].reward_dec);
+                    //    }
+                    //}
+
+                    foreach (var battleItem in SpDataHelper.battlesClass.battles)
                     {
-                        if (Helpers.SpDataHelper.battles.battles[it].winner == accountDetails[i].AccName)
+                        if (battleItem.winner == account.AccName)
                         {
                             totalmodernWins++;
-                            modernDec = modernDec + Convert.ToDouble(Helpers.SpDataHelper.battles.battles[it].reward_dec);
+                            modernDec = modernDec + Convert.ToDouble(battleItem.reward_dec);
+
                         }
+
                     }
                 }
 
                 //Last 50 Matches Win rate wild
 
-                Helpers.SpDataHelper.battles = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(accountDetails[i].AccName, "wild")).Result;
+                Helpers.SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(account.AccName, "wild")).Result;
 
                 int totalWildnWins = 0;
-                int totalWildgames = Helpers.SpDataHelper.battles.battles.Length;
+                int totalWildgames = Helpers.SpDataHelper.battlesClass.battles.Length;
                 double WildDec = 0;
 
-                if (Helpers.SpDataHelper.battles != null)
+                if (Helpers.SpDataHelper.battlesClass != null)
                 {
-                    for (int it = 0; it < totalWildgames; it++)
+
+                    foreach (var battleItem in SpDataHelper.battlesClass.battles)
                     {
-                        if (Helpers.SpDataHelper.battles.battles[it].winner == accountDetails[i].AccName)
+                        if (battleItem.winner == account.AccName)
                         {
                             totalWildnWins++;
-                            WildDec = WildDec + Convert.ToDouble(Helpers.SpDataHelper.battles.battles[it].reward_dec);
+                            WildDec = WildDec + Convert.ToDouble(battleItem.reward_dec);
+
                         }
+
+
                     }
+
                 }
 
                 //rental check
@@ -135,9 +157,10 @@ namespace SplinterCheck
 
                 if (RentalInfo != null)
                 {
-                    for (int it = 0; it < RentalInfo.Length; it++)
+                    foreach(var rentalItem in RentalInfo)
+                    //for (int it = 0; it < RentalInfo.Length; it++)
                     {
-                        if (RentalInfo[it].cancel_date != null)
+                        if (rentalItem.cancel_date != null)
                         {
                             rentCancelNumber++;
                         }
@@ -152,16 +175,17 @@ namespace SplinterCheck
 
                 if (ballance != null)
                 {
+                    foreach(var ballanceItem in ballance)
 
-                    for (int it = 0; it < ballance.Length; it++)
+                    //for (int it = 0; it < ballance.Length; it++)
                     {
-                        if (ballance[it].token == "GOLD")
+                        if (ballanceItem.token == "GOLD")
                         {
-                            goldPotions = ballance[it].balance.ToString();
+                            goldPotions = ballanceItem.balance.ToString();
                         }
-                        if (ballance[it].token == "LEGENDARY")
+                        if (ballanceItem.token == "LEGENDARY")
                         {
-                            legendaryPotions = ballance[it].balance.ToString();
+                            legendaryPotions = ballanceItem.balance.ToString();
                         }
                     }
                 }
@@ -171,11 +195,11 @@ namespace SplinterCheck
 
                 // warnings
 
-                if (SplinterInfo.collection_power < accountDetails[i].Power)
+                if (SplinterInfo.collection_power < account.Power)
                 {
 
 
-                    warningMessage = "Power Missing: " + (accountDetails[i].Power - SplinterInfo.collection_power).ToString() + "\n";
+                    warningMessage = "Power Missing: " + (account.Power - SplinterInfo.collection_power).ToString() + "\n";
                     //OneListItem.Background = Brushes.Coral;
 
                 }
@@ -227,7 +251,7 @@ namespace SplinterCheck
                     Rshares = QuestInfo[0].rshares,
                     Created_date = QuestInfo[0].created_date,
                     Reward_qty = QuestInfo[0].reward_qty,
-                    potions = goldPotions + " / " + legendaryPotions,
+                    Potions = goldPotions + " / " + legendaryPotions,
 
                     //Warning = warningMessage,
                     //Test = +testr,

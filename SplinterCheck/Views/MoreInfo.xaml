@@ -5,28 +5,106 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SplinterCheck"
         mc:Ignorable="d"
-        Title="More Info" Height="285" Width="400" WindowStartupLocation="CenterOwner">
+        Title="More Info" Height="285" Width="800" WindowStartupLocation="CenterOwner" ResizeMode="CanResize">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140*"></RowDefinition>
-            <RowDefinition Height="50*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="80*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"></ColumnDefinition>
+            <ColumnDefinition Width="25*"></ColumnDefinition>
             <ColumnDefinition Width="150*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Label Content="More Details" HorizontalAlignment="Left" FontSize="20" Grid.Column="0" Grid.ColumnSpan="2" Width="150"></Label>
 
-        <Label x:Name="lblAccount" Grid.Row="0" HorizontalContentAlignment="Right" Content="Account" HorizontalAlignment="Left" Margin="10,70,0,0"></Label>
-        <TextBox x:Name="TxbAccount" Grid.Column="1" HorizontalAlignment="Left" Margin="10,70,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="lblAccount" 
+               Grid.Row="0" 
+               Grid.Column="0" 
+               HorizontalContentAlignment="Right" 
+               Content="Account:" 
+               HorizontalAlignment="Left" />
 
-        <Label x:Name="lblPower" Grid.Row="0" HorizontalContentAlignment="Right" Content="Power" HorizontalAlignment="Left" Margin="10,110,0,0"></Label>
-        <TextBox x:Name="TxtPower" Grid.Column="1" HorizontalAlignment="Left" Margin="10,110,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="lblAccountName" 
+               Grid.Row="0" 
+               Grid.Column="1" 
+               HorizontalContentAlignment="Right" 
+               Content="" 
+               HorizontalAlignment="Left" />
 
-        <Button x:Name="BtnPrev" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="Prev" Width="50" Height="25" Margin="10,0,0,0" Click="BtnPrev_Click"></Button>
-        <Button x:Name="BtnNext" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="Next" Width="50" Height="25" Margin="70,0,0,0" Grid.ColumnSpan="2" Click="BtnNext_Click"></Button>
+        <DataGrid x:Name="dataGridMatches" 
+                  Grid.Row="1" 
+                  Grid.ColumnSpan="2"
+                  HorizontalAlignment="Stretch"
+                  AutoGenerateColumns="True"
+                  
+                 
+                  >
+                  
+                  <!--d:ItemsSource="{d:SampleData ItemCount=5}"-->
+
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="Turquoise"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="BorderThickness"  Value="0,0,1,2"/>
+                    <Setter Property="BorderBrush"  Value="Black"/>
+                </Style>
+                
+            </DataGrid.Resources>
+            
+
+
+            <DataGrid.Columns>
+                <DataGridTextColumn 
+                    Header=" value 1" 
+                    Width="*"
+                    Binding="{Binding Value1}"
+                    />
+                <DataGridTextColumn 
+                    Header=" value 2" 
+                    Width="*"
+                    Binding="{Binding Value2}"
+                    />
+                <DataGridTextColumn 
+                    Header=" value 3" 
+                    Width="*"
+                    Binding="{Binding Value3}"
+                    />
+
+                
+                
+            </DataGrid.Columns>
+            
+            
+            
+            
+        </DataGrid>
+
+
+
+        <Button x:Name="BtnPrev" 
+                Grid.Row="2" 
+                Grid.Column="0" 
+                HorizontalAlignment="Left" 
+                Content="Prev" 
+                Width="40" 
+                Height="25" 
+                Margin="10,0,0,0" 
+                Click="BtnPrev_Click">
+        </Button>
+        
+        <Button x:Name="BtnNext" 
+                Grid.Row="2" 
+                Grid.Column="1" 
+                HorizontalAlignment="Left" 
+                Content="Next" 
+                Width="40" 
+                Height="25" 
+                Click="BtnNext_Click">
+        </Button>
+
 
     </Grid>
 </Window>

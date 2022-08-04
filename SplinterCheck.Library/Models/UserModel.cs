@@ -34,7 +34,7 @@ namespace SplinterCheck.Library.Models
         public string WildLast50 { get; set; }
         public double ModernLast50Dec { get; set; }
         public double WildLast50Dec { get; set; }
-        public string potions { get; set; }
+        public string Potions { get; set; }
 
 
 

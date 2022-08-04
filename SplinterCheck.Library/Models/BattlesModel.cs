@@ -49,8 +49,8 @@ namespace SplinterCheck.Library.Models
     //public class Details
     //{
     //    public string seed { get; set; }
-    //    public Team1 team1 { get; set; }
-    //    public Team2 team2 { get; set; }
+    //    //public Team1 team1 { get; set; }
+    //    //public Team2 team2 { get; set; }
     //    public string winner { get; set; }
     //    public string loser { get; set; }
     //    public string type { get; set; }
@@ -74,7 +74,7 @@ namespace SplinterCheck.Library.Models
     //    public int level { get; set; }
     //    public int edition { get; set; }
     //    public object skin { get; set; }
-    //    public State state { get; set; }
+        //public State state { get; set; }
     //}
 
     //public class State
@@ -92,7 +92,7 @@ namespace SplinterCheck.Library.Models
     //    public int level { get; set; }
     //    public int edition { get; set; }
     //    public object skin { get; set; }
-    //    public State1 state { get; set; }
+    //    //public State1 state { get; set; }
     //    public string[] abilities { get; set; }
     //}
 
@@ -122,7 +122,7 @@ namespace SplinterCheck.Library.Models
     //    public int level { get; set; }
     //    public int edition { get; set; }
     //    public object skin { get; set; }
-    //    public State2 state { get; set; }
+    //    //public State2 state { get; set; }
     //    public string player { get; set; }
     //    public object market_id { get; set; }
     //    public object buy_price { get; set; }
@@ -158,7 +158,7 @@ namespace SplinterCheck.Library.Models
     //    public int level { get; set; }
     //    public int edition { get; set; }
     //    public object skin { get; set; }
-    //    public State3 state { get; set; }
+    //    //public State3 state { get; set; }
     //    public string[] abilities { get; set; }
     //    public string player { get; set; }
     //    public object market_id { get; set; }
@@ -275,6 +275,7 @@ namespace SplinterCheck.Library.Models
     //    public string player_uuid { get; set; }
     //    public object paypal_ban { get; set; }
     //}
+
 
 
 }
