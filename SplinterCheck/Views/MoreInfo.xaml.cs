@@ -5,6 +5,9 @@ using System.Windows;
 using SplinterCheck.Library.Models;
 using SplinterCheck.Helpers;
 using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace SplinterCheck
 {
@@ -17,6 +20,8 @@ namespace SplinterCheck
 
         public event Action<MoreInfo> PrevAccount;
 
+        const string ApiUrl = "https://api2.splinterlands.com";
+
 
 
         public class Testdata {
@@ -26,6 +31,8 @@ namespace SplinterCheck
             public string Value3 { get; set; }
 
         }
+
+
 
         public MoreInfo()
         {
@@ -38,21 +45,20 @@ namespace SplinterCheck
             // add details 
 
 
-
-
-
-
-
         }
 
         public UserModel UserModel { get; set; }
 
-        public void ShowAccount(UserModel user)
+        public async void ShowAccount(UserModel user)
         {
             UserModel = user;
             lblAccountName.Content = $"{UserModel.Name}";
 
-            Helpers.SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(UserModel.Name, "modern")).Result;
+            //var RentalInfo = await Processors.SplinterProcessor.LoadBattleHistory222(UserModel.Name, "modern");
+
+
+
+            SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(UserModel.Name, "modern")).Result;
 
 
             List<Testdata> list = new List<Testdata>();
@@ -61,12 +67,19 @@ namespace SplinterCheck
 
             foreach (var test in SpDataHelper.battlesClass.battles)
             {
+        
+                dataGridMatches.Items.Add(new Testdata(){
+                    Value1 = test.winner,
+                    Value2 = test.ruleset,
+                    Value3 = test.format
+                });
+                
 
                 list.Add(new Testdata { Value1 = test.winner, Value2 = test.ruleset, Value3 = test.format });
 
       
             }
-            dataGridMatches.Items.Add(list);
+            //dataGridMatches.Items.Add(list);
 
 
             //int test = Helpers.SpDataHelper.battles.battles.Length;

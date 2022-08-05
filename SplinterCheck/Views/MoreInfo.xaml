@@ -38,8 +38,7 @@
                   Grid.ColumnSpan="2"
                   HorizontalAlignment="Stretch"
                   AutoGenerateColumns="True"
-                  
-                 
+
                   >
                   
                   <!--d:ItemsSource="{d:SampleData ItemCount=5}"-->
@@ -54,8 +53,6 @@
                 
             </DataGrid.Resources>
             
-
-
             <DataGrid.Columns>
                 <DataGridTextColumn 
                     Header=" value 1" 
@@ -72,17 +69,10 @@
                     Width="*"
                     Binding="{Binding Value3}"
                     />
-
-                
                 
             </DataGrid.Columns>
             
-            
-            
-            
         </DataGrid>
-
-
 
         <Button x:Name="BtnPrev" 
                 Grid.Row="2" 

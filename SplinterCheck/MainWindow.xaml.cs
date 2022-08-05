@@ -12,6 +12,7 @@ using SplinterCheck.Library.Models;
 using SplinterCheck.Helpers;
 using SplinterCheck.Processors;
 
+
 namespace SplinterCheck
 {
 
@@ -28,6 +29,8 @@ namespace SplinterCheck
 
         public MainWindow()
         {
+            TestClass();
+
             InitializeComponent();
             ApiHelper.InitializeClient();
         }
@@ -65,10 +68,10 @@ namespace SplinterCheck
 
                 string warningMessage = "";
 
-                var SplinterInfo = await Processors.SplinterProcessor.LoadSplinterInformation(account.AccName);
-                var QuestInfo = await Processors.SplinterProcessor.LoadQuestInformation(account.AccName);
-                var RentalInfo = await Processors.SplinterProcessor.LoadRentalInformation(account.AccName);
-                var ballance = await Processors.SplinterProcessor.LoadBalances(account.AccName);
+                var SplinterInfo = await SplinterProcessor.LoadSplinterInformation(account.AccName);
+                var QuestInfo = await SplinterProcessor.LoadQuestInformation(account.AccName);
+                var RentalInfo = await SplinterProcessor.LoadRentalInformation(account.AccName);
+                var ballance = await SplinterProcessor.LoadBalances(account.AccName);
 
 
                 int baseRshares = Helpers.SpDataHelper.splinterlandsSetting.loot_chests.quest[QuestInfo[0].chest_tier].@base;
@@ -106,14 +109,6 @@ namespace SplinterCheck
 
                 if (Helpers.SpDataHelper.battlesClass != null)
                 {
-                    //for  (int it = 0; it < totalmoderngames; it++)
-                    //{
-                    //    if (Helpers.SpDataHelper.battles.battles[it].winner == accountDetails[i].AccName)
-                    //    {
-                    //        totalmodernWins++;
-                    //        modernDec = modernDec + Convert.ToDouble(Helpers.SpDataHelper.battles.battles[it].reward_dec);
-                    //    }
-                    //}
 
                     foreach (var battleItem in SpDataHelper.battlesClass.battles)
                     {
@@ -407,6 +402,67 @@ namespace SplinterCheck
             {
                 enableWhatsup = true;
             }
+
+        }
+
+
+        public class testdata
+        {
+            public long Card_Detail_Id  { get; set; }
+        }
+
+        public class testdata3
+        {
+            public long Card_Detail_Id2 { get; set; }
+            public int Count { get; set; }
+        }
+
+        private async void TestClass()
+        {
+            var test = (dynamic)null;
+
+            string filename = "C:\\Users\\stastpe\\Desktop\\test.json";
+
+            string jsontest = File.ReadAllText(filename);
+
+            var data = JsonConvert.DeserializeObject<SplinterLands.DTOs.Models.PlayerBattles>(jsontest);
+
+
+
+            List<testdata> list = new List<testdata>();
+            List<testdata3> listgrouped = new List<testdata3>();
+
+
+            foreach (var item in data.Battles)
+            //for (int it = 0; it < RentalInfo.Length; it++)
+            {
+                if (item.BattleDetails.Winner == "gloomster")
+
+                {
+                    test = item.BattleDetails.Team1.Monsters;
+                }
+                else;
+                {
+                    test = item.BattleDetails.Team2.Monsters;
+                }
+
+                foreach (var item2 in test)
+                {
+                    list.Add(new testdata { Card_Detail_Id = item2.Card_Detail_Id});
+                }
+
+
+            }
+
+            var grouped = list.GroupBy(x => x.Card_Detail_Id);
+            foreach (var group in grouped)
+            {
+
+                listgrouped.Add(new testdata3 { Card_Detail_Id2 = group.Key, Count = group.Count() });
+            }
+
+
+
 
         }
     }
