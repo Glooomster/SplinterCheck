@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.IO;
+using RestSharp;
+using System.Linq;
+using SplinterLands.DTOs.Models;
 
 namespace SplinterCheck
 {
@@ -26,9 +29,9 @@ namespace SplinterCheck
 
         public class Testdata {
 
-            public string Value1 { get; set; }
-            public string Value2 { get; set; }
-            public string Value3 { get; set; }
+            public long Value1 { get; set; }
+            public int Value2 { get; set; }
+            //public string Value3 { get; set; }
 
         }
 
@@ -54,6 +57,17 @@ namespace SplinterCheck
             UserModel = user;
             lblAccountName.Content = $"{UserModel.Name}";
 
+
+
+            GetBattlesGrouped(user.Name);
+
+
+
+
+
+
+
+
             //var RentalInfo = await Processors.SplinterProcessor.LoadBattleHistory222(UserModel.Name, "modern");
 
 
@@ -65,17 +79,17 @@ namespace SplinterCheck
 
 
 
-            foreach (var test in SpDataHelper.battlesClass.battles)
+            foreach (var test in listgrouped)
             {
         
                 dataGridMatches.Items.Add(new Testdata(){
-                    Value1 = test.winner,
-                    Value2 = test.ruleset,
-                    Value3 = test.format
+                    Value1 = test.Card_Detail_Id2,
+                    Value2 = test.Count
+
                 });
                 
 
-                list.Add(new Testdata { Value1 = test.winner, Value2 = test.ruleset, Value3 = test.format });
+                //list.Add(new Testdata { Value1 = test.winner, Value2 = test.ruleset, Value3 = test.format });
 
       
             }
@@ -95,6 +109,97 @@ namespace SplinterCheck
         {
             NextAccount.Invoke(this);
         }
+
+        public List<testdata3> listgrouped = new List<testdata3>();
+
+
+        public class testdata
+        {
+            public long Card_Detail_Id { get; set; }
+        }
+
+        public class testdata3
+        {
+            public long Card_Detail_Id2 { get; set; }
+            public int Count { get; set; }
+        }
+
+        private void GetBattlesGrouped(string username)
+        {
+            var test = (dynamic)null;
+
+
+
+            var client = new RestClient("https://api2.splinterlands.com/battle/history?player=" + username);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            var data = JsonConvert.DeserializeObject<SplinterLands.DTOs.Models.PlayerBattles>(response.Content);
+
+
+
+            List<testdata> list = new List<testdata>();
+  
+
+
+            foreach (var item in data.Battles)
+
+            {
+
+
+                if (item.Player_1 == username)
+
+                {
+                    test = item.BattleDetails.Team1.Monsters;
+                }
+                else;
+                {
+                    test = item.BattleDetails.Team2.Monsters;
+                }
+
+                foreach (var item2 in test)
+                {
+                    list.Add(new testdata { Card_Detail_Id = item2.Card_Detail_Id });
+                }
+
+
+            }
+
+            var grouped = list.GroupBy(x => x.Card_Detail_Id);
+            foreach (var group in grouped)
+            {
+
+                listgrouped.Add(new testdata3 { Card_Detail_Id2 = group.Key, Count = group.Count() });
+            }
+
+            listgrouped = listgrouped.OrderByDescending(x => x.Count).ToList();   
+
+
+
+
+        }
+
+
+        private void GetConnection(string username)
+        {
+
+
+            var client = new RestClient("https://api2.splinterlands.com/battle/history?player=" + username);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            var data = JsonConvert.DeserializeObject<SplinterLands.DTOs.Models.PlayerBattles>(response.Content);
+
+        }
+
+        //public PlayerBattles GetBattlesForPlayer(string playerName)
+        //{
+ 
+        //        //return GetClientResponse<PlayerBattles>($"battle/history?player={playerName}", false);
+
+        //}
+
+
     }
 
 

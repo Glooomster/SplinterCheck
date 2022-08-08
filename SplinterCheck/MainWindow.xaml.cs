@@ -11,7 +11,7 @@ using System.Windows.Threading;
 using SplinterCheck.Library.Models;
 using SplinterCheck.Helpers;
 using SplinterCheck.Processors;
-
+using RestSharp;
 
 namespace SplinterCheck
 {
@@ -29,7 +29,7 @@ namespace SplinterCheck
 
         public MainWindow()
         {
-            TestClass();
+            //TestClass();
 
             InitializeComponent();
             ApiHelper.InitializeClient();
@@ -406,64 +406,6 @@ namespace SplinterCheck
         }
 
 
-        public class testdata
-        {
-            public long Card_Detail_Id  { get; set; }
-        }
 
-        public class testdata3
-        {
-            public long Card_Detail_Id2 { get; set; }
-            public int Count { get; set; }
-        }
-
-        private async void TestClass()
-        {
-            var test = (dynamic)null;
-
-            string filename = "C:\\Users\\stastpe\\Desktop\\test.json";
-
-            string jsontest = File.ReadAllText(filename);
-
-            var data = JsonConvert.DeserializeObject<SplinterLands.DTOs.Models.PlayerBattles>(jsontest);
-
-
-
-            List<testdata> list = new List<testdata>();
-            List<testdata3> listgrouped = new List<testdata3>();
-
-
-            foreach (var item in data.Battles)
-            //for (int it = 0; it < RentalInfo.Length; it++)
-            {
-                if (item.BattleDetails.Winner == "gloomster")
-
-                {
-                    test = item.BattleDetails.Team1.Monsters;
-                }
-                else;
-                {
-                    test = item.BattleDetails.Team2.Monsters;
-                }
-
-                foreach (var item2 in test)
-                {
-                    list.Add(new testdata { Card_Detail_Id = item2.Card_Detail_Id});
-                }
-
-
-            }
-
-            var grouped = list.GroupBy(x => x.Card_Detail_Id);
-            foreach (var group in grouped)
-            {
-
-                listgrouped.Add(new testdata3 { Card_Detail_Id2 = group.Key, Count = group.Count() });
-            }
-
-
-
-
-        }
     }
 }

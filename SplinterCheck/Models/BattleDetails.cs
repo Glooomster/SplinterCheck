@@ -6,6 +6,8 @@ namespace SplinterLands.DTOs.Models
     {
         public string Seed { get; set; } = string.Empty;
 
+       
+
 
         public Team Team1 { get; set; } = new Team();
         public Team Team2 { get; set; } = new Team();
