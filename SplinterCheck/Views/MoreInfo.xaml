@@ -55,19 +55,15 @@
             
             <DataGrid.Columns>
                 <DataGridTextColumn 
-                    Header=" value 1" 
+                    Header=" Card ID " 
                     Width="*"
-                    Binding="{Binding Value1}"
+                    Binding="{Binding Card_Detail_Id}"
                     />
                 <DataGridTextColumn 
-                    Header=" value 2" 
+                    Header=" Count " 
                     Width="*"
-                    Binding="{Binding Value2}"
-                    />
-                <DataGridTextColumn 
-                    Header=" value 3" 
-                    Width="*"
-                    Binding="{Binding Value3}"
+                    Binding="{Binding Count}"
+                    SortDirection="Ascending"
                     />
                 
             </DataGrid.Columns>

@@ -10,6 +10,7 @@ namespace SplinterLands.DTOs.Models
         public Int64 Rating { get; set; } = -1;
         public string Color { get; set; } = string.Empty;
         public BattleCard Summoner { get; set; } = new BattleCard();
+
         public List<BattleCard> Monsters { get; set; } = new List<BattleCard>();
     }
 }

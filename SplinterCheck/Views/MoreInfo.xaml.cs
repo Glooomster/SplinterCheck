@@ -63,36 +63,27 @@ namespace SplinterCheck
 
 
 
+           // SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(UserModel.Name, "modern")).Result;
+
+
+           // List<Testdata> list = new List<Testdata>();
 
 
 
-
-
-            //var RentalInfo = await Processors.SplinterProcessor.LoadBattleHistory222(UserModel.Name, "modern");
-
-
-
-            SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(UserModel.Name, "modern")).Result;
-
-
-            List<Testdata> list = new List<Testdata>();
-
-
-
-            foreach (var test in listgrouped)
-            {
+            //foreach (var loadCards in mostPlayedMonsterList)
+            //{
         
-                dataGridMatches.Items.Add(new Testdata(){
-                    Value1 = test.Card_Detail_Id2,
-                    Value2 = test.Count
+            //    dataGridMatches.Items.Add(new FilteredMonsters(){
+            //        Card_Detail_Id = loadCards.Card_Detail_Id,
+            //        Count = loadCards.Count
 
-                });
+            //    });
                 
 
-                //list.Add(new Testdata { Value1 = test.winner, Value2 = test.ruleset, Value3 = test.format });
+            //    list.Add(new Testdata { Value1 = test.winner, Value2 = test.ruleset, Value3 = test.format });
 
       
-            }
+            //}
             //dataGridMatches.Items.Add(list);
 
 
@@ -110,85 +101,137 @@ namespace SplinterCheck
             NextAccount.Invoke(this);
         }
 
-        public List<testdata3> listgrouped = new List<testdata3>();
+        public List<FilteredMonsters> mostPlayedMonsterList = new List<FilteredMonsters>();
 
 
-        public class testdata
+        public class FilteredMonsters
+
         {
             public long Card_Detail_Id { get; set; }
+            public int Count { get; set; }
+            public string Name { get; set; }
         }
 
-        public class testdata3
-        {
-            public long Card_Detail_Id2 { get; set; }
-            public int Count { get; set; }
-        }
+        //public class testdata3
+        //{
+        //    public long Card_Detail_Id2 { get; set; }
+        //    public int Count { get; set; }
+        //}
 
         private void GetBattlesGrouped(string username)
         {
-            var test = (dynamic)null;
+            var monsterVariable = (dynamic)null; 
+            //List<BattleCard> monsters = new List<BattleCard>();
+            List<FilteredMonsters> monstersList = new List<FilteredMonsters>();
+
+
+            string getApiBattles = GetApiCall("battle/history?player=", username);
 
 
 
-            var client = new RestClient("https://api2.splinterlands.com/battle/history?player=" + username);
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-            var data = JsonConvert.DeserializeObject<SplinterLands.DTOs.Models.PlayerBattles>(response.Content);
+            //string getCardDetails = GetApiCall("cards/get_details", "");
+            //var cards = JsonConvert.DeserializeObject<SplinterCheck.Models.Card>(getCardDetails);
 
-
-
-            List<testdata> list = new List<testdata>();
-  
-
-
-            foreach (var item in data.Battles)
-
+            if (getApiBattles != null)
             {
 
+                var data = JsonConvert.DeserializeObject<SplinterLands.DTOs.Models.PlayerBattles>(getApiBattles);
 
-                if (item.Player_1 == username)
+
+
+
+
+
+                foreach (var battlesPlayed in data.Battles)
 
                 {
-                    test = item.BattleDetails.Team1.Monsters;
-                }
-                else;
-                {
-                    test = item.BattleDetails.Team2.Monsters;
+
+                    if (battlesPlayed.BattleDetails.Team1 != null & battlesPlayed.BattleDetails.Team2 != null)
+                    {
+                        if (battlesPlayed.Player_1 == username)
+
+                        {
+                            monsterVariable = battlesPlayed.BattleDetails.Team1.Monsters;
+                        }
+                        else;
+                        {
+                            monsterVariable = battlesPlayed.BattleDetails.Team2.Monsters;
+                        }
+
+
+                    }
+
+
+
+
+                    foreach (var filteredList in monsterVariable)
+                    {
+                        monstersList.Add(new FilteredMonsters { Card_Detail_Id = filteredList.Card_Detail_Id });
+                    }
                 }
 
-                foreach (var item2 in test)
-                {
-                    list.Add(new testdata { Card_Detail_Id = item2.Card_Detail_Id });
-                }
 
+
+
+                var groupedMonsters = monstersList.GroupBy(x => x.Card_Detail_Id);
+                foreach (var group in groupedMonsters)
+                {
+
+                    //mostPlayedMonsterList.Add(new FilteredMonsters { Card_Detail_Id = group.Key, Count = group.Count() });
+
+
+
+
+
+
+                    dataGridMatches.Items.Add(new FilteredMonsters()
+                    {
+                        Card_Detail_Id = group.Key,
+                        Name = "",
+                        Count = group.Count()
+                    });
+
+                }
 
             }
-
-            var grouped = list.GroupBy(x => x.Card_Detail_Id);
-            foreach (var group in grouped)
-            {
-
-                listgrouped.Add(new testdata3 { Card_Detail_Id2 = group.Key, Count = group.Count() });
-            }
-
-            listgrouped = listgrouped.OrderByDescending(x => x.Count).ToList();   
+           
 
 
+
+
+            //mostPlayedMonsterList = mostPlayedMonsterList.OrderByDescending(x => x.Count).ToList();
+
+            //foreach (var loadCards in mostPlayedMonsterList)
+            //{
+
+            //    dataGridMatches.Items.Add(new FilteredMonsters()
+            //    {
+            //        Card_Detail_Id = loadCards.Card_Detail_Id,
+            //        Count = loadCards.Count
+
+            //    });
+
+
+            //list.Add(new Testdata { Value1 = test.winner, Value2 = test.ruleset, Value3 = test.format });
+
+
+            //}
 
 
         }
 
 
-        private void GetConnection(string username)
+        public string GetApiCall(string api,string username) 
         {
+            string baseApi = "https://api2.splinterlands.com/";
 
-
-            var client = new RestClient("https://api2.splinterlands.com/battle/history?player=" + username);
+            var client = new RestClient(baseApi + api + username);
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            var data = JsonConvert.DeserializeObject<SplinterLands.DTOs.Models.PlayerBattles>(response.Content);
+
+            return response.Content;
+
 
         }
 
