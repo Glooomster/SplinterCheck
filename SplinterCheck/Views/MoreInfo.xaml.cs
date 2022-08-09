@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using System.IO;
 using RestSharp;
 using System.Linq;
-using SplinterLands.DTOs.Models;
 
 namespace SplinterCheck
 {
@@ -108,6 +107,7 @@ namespace SplinterCheck
 
         {
             public long Card_Detail_Id { get; set; }
+            public string Card_Name { get; set; }
             public int Count { get; set; }
             public string Name { get; set; }
         }
@@ -125,7 +125,7 @@ namespace SplinterCheck
             List<FilteredMonsters> monstersList = new List<FilteredMonsters>();
 
 
-            string getApiBattles = GetApiCall("battle/history?player=", username);
+            string getApiBattles = ApiRequest.GetApiResponse("battle/history?player=" + username);
 
 
 
@@ -135,7 +135,7 @@ namespace SplinterCheck
             if (getApiBattles != null)
             {
 
-                var data = JsonConvert.DeserializeObject<SplinterLands.DTOs.Models.PlayerBattles>(getApiBattles);
+                var data = JsonConvert.DeserializeObject<PlayerBattles>(getApiBattles);
 
 
 
@@ -221,19 +221,18 @@ namespace SplinterCheck
         }
 
 
-        public string GetApiCall(string api,string username) 
-        {
-            string baseApi = "https://api2.splinterlands.com/";
+        //public string GetApiCall(string api,string username) 
+        //{
+        //    string baseApi = "https://api2.splinterlands.com/";
 
-            var client = new RestClient(baseApi + api + username);
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+        //    var client = new RestClient(baseApi + api + username);
+        //    client.Timeout = -1;
+        //    var request = new RestRequest(Method.GET);
+        //    IRestResponse response = client.Execute(request);
 
-            return response.Content;
+        //    return response.Content;
 
-
-        }
+        //}
 
         //public PlayerBattles GetBattlesForPlayer(string playerName)
         //{

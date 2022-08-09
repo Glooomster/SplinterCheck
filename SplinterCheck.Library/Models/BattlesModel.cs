@@ -11,40 +11,40 @@ namespace SplinterCheck.Library.Models
 
     public class BattlesModel
     {
-        public string player { get; set; }
-        public Battle[] battles { get; set; }
+        //public string player { get; set; }
+        //public Battle[] battles { get; set; }
     }
 
-    public class Battle
-    {
-        public string battle_queue_id_1 { get; set; }
-        public string battle_queue_id_2 { get; set; }
-        public int player_1_rating_initial { get; set; }
-        public int player_2_rating_initial { get; set; }
-        public string winner { get; set; }
-        public int player_1_rating_final { get; set; }
-        public int player_2_rating_final { get; set; }
-        //public Details details { get; set; }
-        public string player_1 { get; set; }
-        public string player_2 { get; set; }
-        public DateTime created_date { get; set; }
-        public string match_type { get; set; }
-        public int mana_cap { get; set; }
-        public int current_streak { get; set; }
-        public string ruleset { get; set; }
-        public string inactive { get; set; }
-        public string settings { get; set; }
-        public int block_num { get; set; }
-        public int rshares { get; set; }
-        public string dec_info { get; set; }
-        public int leaderboard { get; set; }
-        public string reward_dec { get; set; }
-        public object reward_sps { get; set; }
-        public bool is_surrender { get; set; }
-        public string format { get; set; }
-        //public Player_1_Data player_1_data { get; set; }
-        //public Player_2_Data player_2_data { get; set; }
-    }
+    //public class Battle
+    //{
+    //    public string battle_queue_id_1 { get; set; }
+    //    public string battle_queue_id_2 { get; set; }
+    //    public int player_1_rating_initial { get; set; }
+    //    public int player_2_rating_initial { get; set; }
+    //    public string winner { get; set; }
+    //    public int player_1_rating_final { get; set; }
+    //    public int player_2_rating_final { get; set; }
+    //    //public Details details { get; set; }
+    //    public string player_1 { get; set; }
+    //    public string player_2 { get; set; }
+    //    public DateTime created_date { get; set; }
+    //    public string match_type { get; set; }
+    //    public int mana_cap { get; set; }
+    //    public int current_streak { get; set; }
+    //    public string ruleset { get; set; }
+    //    public string inactive { get; set; }
+    //    public string settings { get; set; }
+    //    public int block_num { get; set; }
+    //    public int rshares { get; set; }
+    //    public string dec_info { get; set; }
+    //    public int leaderboard { get; set; }
+    //    public string reward_dec { get; set; }
+    //    public object reward_sps { get; set; }
+    //    public bool is_surrender { get; set; }
+    //    public string format { get; set; }
+    //    //public Player_1_Data player_1_data { get; set; }
+    //    //public Player_2_Data player_2_data { get; set; }
+    //}
 
     //public class Details
     //{

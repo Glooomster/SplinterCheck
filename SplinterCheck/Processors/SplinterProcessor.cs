@@ -13,7 +13,7 @@ namespace SplinterCheck.Processors
         
 
         const string ApiUrl = "https://api2.splinterlands.com";
-        private readonly string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36";
+        //private readonly string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36";
 
 
 
@@ -72,6 +72,13 @@ namespace SplinterCheck.Processors
         //    }
         //    return JsonConvert.DeserializeObject<SplinterlandsSetting>(result);
         //}
+
+        public static class SpDataHelper
+        {
+            public static SplinterlandsSetting splinterlandsSetting = new();
+            public static PlayerBattles playerBattles = new();
+
+        }
 
         public async Task<SplinterlandsSetting> LoadSplinterlandsSetting()
         {
@@ -147,21 +154,27 @@ namespace SplinterCheck.Processors
             }
         }
 
-        public async Task<BattlesModel> LoadBattleHistory(string username, string format)
+        public async Task<PlayerBattles> LoadBattleHistory(string username, string format)
         {
-            string result;
-            HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(ApiUrl + "/battle/history?player=" + username + "&format=" + format);
-            if (response.IsSuccessStatusCode)
-            {
-                result = await response.Content.ReadAsStringAsync();
-
-            }
-            else
-            {
-                throw new Exception(response.ReasonPhrase);
-            }
-            return JsonConvert.DeserializeObject<BattlesModel>(result);
+            string getModernBattles = Helpers.ApiRequest.GetApiResponse("battle/history?player=" + username + "&format=modern");
+            return JsonConvert.DeserializeObject<PlayerBattles>(getModernBattles);
         }
+
+        //public async Task<BattlesModel> LoadBattleHistory(string username, string format)
+        //{
+        //    string result;
+        //    HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(ApiUrl + "/battle/history?player=" + username + "&format=" + format);
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        result = await response.Content.ReadAsStringAsync();
+
+        //    }
+        //    else
+        //    {
+        //        throw new Exception(response.ReasonPhrase);
+        //    }
+        //    return JsonConvert.DeserializeObject<BattlesModel>(result);
+        //}
 
 
         public static async Task<BalanceModel[]> LoadBalances(string Name)

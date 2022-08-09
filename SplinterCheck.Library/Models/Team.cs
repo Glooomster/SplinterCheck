@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SplinterLands.DTOs.Models
+namespace SplinterCheck.Library.Models
 {
     public class Team
     {

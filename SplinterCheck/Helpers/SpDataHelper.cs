@@ -5,7 +5,7 @@ namespace SplinterCheck.Helpers
     public static class SpDataHelper
     {
         public static SplinterlandsSetting splinterlandsSetting = new();
-        public static BattlesModel battlesClass = new();
+        public static PlayerBattles playerBattles = new();
 
     }
 }

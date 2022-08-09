@@ -2,7 +2,7 @@
 //using SplinterLands.DTOs.Enums;
 using System;
 
-namespace SplinterLands.DTOs.Models
+namespace SplinterCheck.Library.Models
 {
     public class BattleCard
     {

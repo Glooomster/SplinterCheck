@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace SplinterLands.DTOs.Models
-{
+namespace SplinterCheck.Library.Models
+{ 
+
     public class BattleDetails
     {
         public string Seed { get; set; } = string.Empty;

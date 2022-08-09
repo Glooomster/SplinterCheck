@@ -45,7 +45,7 @@ namespace SplinterCheck
             };
 
 
-            Helpers.SpDataHelper.splinterlandsSetting = Task.Run(() => new Processors.SplinterProcessor().LoadSplinterlandsSetting()).Result;
+            Helpers.SpDataHelper.splinterlandsSetting = Task.Run(() => new SplinterProcessor().LoadSplinterlandsSetting()).Result;
             GetSplinterData(0);
         }
 
@@ -88,34 +88,41 @@ namespace SplinterCheck
 
                 string leagueWildName = SpDataHelper.splinterlandsSetting.leagues.modern[SplinterInfo.league].name;
                 string leagueModernName = SpDataHelper.splinterlandsSetting.leagues.modern[SplinterInfo.modern_league].name;
-                string splinter = Helpers.SpDataHelper.splinterlandsSetting.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
+                string splinter = SpDataHelper.splinterlandsSetting.daily_quests.Where(x => x.active == true && x.name == QuestInfo[0].name).FirstOrDefault().data.value;
                 string questItems = QuestInfo[0].completed_items.ToString();
 
 
-           
+
 
 
 
                 //Last 50 Matches Win rate modern
 
 
-                Helpers.SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(account.AccName, "modern")).Result;
+
+                string getModernBattles = ApiRequest.GetApiResponse("battle/history?player=" + account.AccName + "&format=modern" );
+
+                
+
+                var modernBattles = JsonConvert.DeserializeObject<PlayerBattles>(getModernBattles);
+
+                SpDataHelper.playerBattles = Task.Run(() => new SplinterProcessor().LoadBattleHistory(account.AccName, "modern")).Result;
 
 
                 int totalmodernWins = 0;
-                int totalmoderngames = Helpers.SpDataHelper.battlesClass.battles.Length;
+                int totalmoderngames = modernBattles.Battles.Count;
                 double modernDec = 0;
 
 
-                if (Helpers.SpDataHelper.battlesClass != null)
+                if (modernBattles != null)
                 {
 
-                    foreach (var battleItem in SpDataHelper.battlesClass.battles)
+                    foreach (var battleItem in modernBattles.Battles)
                     {
-                        if (battleItem.winner == account.AccName)
+                        if (battleItem.BattleDetails.Winner == account.AccName)
                         {
                             totalmodernWins++;
-                            modernDec = modernDec + Convert.ToDouble(battleItem.reward_dec);
+                            modernDec = modernDec + Convert.ToDouble(battleItem.Reward_Dec);
 
                         }
 
@@ -123,28 +130,29 @@ namespace SplinterCheck
                 }
 
                 //Last 50 Matches Win rate wild
+                string getWildBattles = ApiRequest.GetApiResponse("battle/history?player=" + account.AccName + "&format=wild");
 
-                Helpers.SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(account.AccName, "wild")).Result;
+                var wildBattles = JsonConvert.DeserializeObject<PlayerBattles>(getWildBattles);
+
+                //Helpers.SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(account.AccName, "wild")).Result;
 
                 int totalWildnWins = 0;
-                int totalWildgames = Helpers.SpDataHelper.battlesClass.battles.Length;
-                double WildDec = 0;
+                int totalWildgames = wildBattles.Battles.Count;
+                double wildDec = 0;
 
-                if (Helpers.SpDataHelper.battlesClass != null)
+                if (wildBattles != null)
                 {
 
-                    foreach (var battleItem in SpDataHelper.battlesClass.battles)
+                    foreach (var battleItem in wildBattles.Battles)
                     {
-                        if (battleItem.winner == account.AccName)
+                        if (battleItem.BattleDetails.Winner == account.AccName)
                         {
                             totalWildnWins++;
-                            WildDec = WildDec + Convert.ToDouble(battleItem.reward_dec);
+                            wildDec = wildDec + Convert.ToDouble(battleItem.Reward_Dec);
 
                         }
 
-
                     }
-
                 }
 
                 //rental check
@@ -237,7 +245,7 @@ namespace SplinterCheck
                     LeagueWild = leagueWildName,
                     WildWinRate = (SplinterInfo.wins * 100.00 / SplinterInfo.battles).ToString("#") + "%",
                     WildLast50 = (totalWildnWins * 100.00 / totalWildgames).ToString("#") + "%",
-                    WildLast50Dec = Math.Round(WildDec, 2),
+                    WildLast50Dec = Math.Round(wildDec, 2),
                     Capture_rate = SplinterInfo.capture_rate / 100,
                     CollectionPower = SplinterInfo.collection_power,
                     QuestTitle = splinter,

@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 
-namespace SplinterLands.DTOs.Models
+namespace SplinterCheck.Library.Models
 {
     public class Battle
     {
