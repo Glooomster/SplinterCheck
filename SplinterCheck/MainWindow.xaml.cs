@@ -12,6 +12,7 @@ using SplinterCheck.Library.Models;
 using SplinterCheck.Helpers;
 using SplinterCheck.Processors;
 using RestSharp;
+using System.Diagnostics;
 
 namespace SplinterCheck
 {
@@ -25,6 +26,8 @@ namespace SplinterCheck
         public DispatcherTimer dispatcherTimer = new();
         public int TestValue;
         public Boolean enableWhatsup = false;
+
+        public List<ListViewItem> UserModelList = new List<ListViewItem>();
 
 
         public MainWindow()
@@ -49,7 +52,6 @@ namespace SplinterCheck
             GetSplinterData(0);
         }
 
-        List<ListViewItem> UserModelList = new List<ListViewItem>();
 
         public async void GetSplinterData(int testr)
         {
@@ -106,7 +108,7 @@ namespace SplinterCheck
 
                 var modernBattles = JsonConvert.DeserializeObject<PlayerBattles>(getModernBattles);
 
-                SpDataHelper.playerBattles = Task.Run(() => new SplinterProcessor().LoadBattleHistory(account.AccName, "modern")).Result;
+               // SpDataHelper.playerBattles = Task.Run(() => new SplinterProcessor().LoadBattleHistory(account.AccName, "modern")).Result;
 
 
                 int totalmodernWins = 0;
@@ -133,6 +135,10 @@ namespace SplinterCheck
                 string getWildBattles = ApiRequest.GetApiResponse("battle/history?player=" + account.AccName + "&format=wild");
 
                 var wildBattles = JsonConvert.DeserializeObject<PlayerBattles>(getWildBattles);
+
+
+                Debug.WriteLine("test");
+
 
                 //Helpers.SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(account.AccName, "wild")).Result;
 

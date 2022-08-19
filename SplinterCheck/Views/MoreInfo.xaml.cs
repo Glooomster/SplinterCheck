@@ -172,17 +172,11 @@ namespace SplinterCheck
 
 
 
-
                 var groupedMonsters = monstersList.GroupBy(x => x.Card_Detail_Id);
                 foreach (var group in groupedMonsters)
                 {
 
                     //mostPlayedMonsterList.Add(new FilteredMonsters { Card_Detail_Id = group.Key, Count = group.Count() });
-
-
-
-
-
 
                     dataGridMatches.Items.Add(new FilteredMonsters()
                     {
@@ -194,52 +188,8 @@ namespace SplinterCheck
                 }
 
             }
-           
-
-
-
-
-            //mostPlayedMonsterList = mostPlayedMonsterList.OrderByDescending(x => x.Count).ToList();
-
-            //foreach (var loadCards in mostPlayedMonsterList)
-            //{
-
-            //    dataGridMatches.Items.Add(new FilteredMonsters()
-            //    {
-            //        Card_Detail_Id = loadCards.Card_Detail_Id,
-            //        Count = loadCards.Count
-
-            //    });
-
-
-            //list.Add(new Testdata { Value1 = test.winner, Value2 = test.ruleset, Value3 = test.format });
-
-
-            //}
-
 
         }
-
-
-        //public string GetApiCall(string api,string username) 
-        //{
-        //    string baseApi = "https://api2.splinterlands.com/";
-
-        //    var client = new RestClient(baseApi + api + username);
-        //    client.Timeout = -1;
-        //    var request = new RestRequest(Method.GET);
-        //    IRestResponse response = client.Execute(request);
-
-        //    return response.Content;
-
-        //}
-
-        //public PlayerBattles GetBattlesForPlayer(string playerName)
-        //{
- 
-        //        //return GetClientResponse<PlayerBattles>($"battle/history?player={playerName}", false);
-
-        //}
 
 
     }
