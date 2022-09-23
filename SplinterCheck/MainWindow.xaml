@@ -66,12 +66,12 @@
                     <GridViewColumn Header=" Chests "  DisplayMemberBinding="{Binding Earned_Chests}" />
                     <GridViewColumn Header=" Modern League "  DisplayMemberBinding="{Binding LeagueModern}" />
                     <GridViewColumn Header=" Rating " DisplayMemberBinding="{Binding RatingModern}" />
-                    <GridViewColumn Header=" Last 50 DEC "  DisplayMemberBinding="{Binding ModernLast50Dec}" />
+                    <GridViewColumn Header=" Last 50 SPS "  DisplayMemberBinding="{Binding ModernLast50Dec}" />
                     <GridViewColumn Header=" Last 50 "  DisplayMemberBinding="{Binding ModernLast50}" />
                     <GridViewColumn Header=" Overall "  DisplayMemberBinding="{Binding ModernWinRate}" />
                     <GridViewColumn Header=" Wild League "  DisplayMemberBinding="{Binding LeagueWild}" />
                     <GridViewColumn Header=" Rating " DisplayMemberBinding="{Binding RatingWild}" />
-                    <GridViewColumn Header=" Last 50 DEC "  DisplayMemberBinding="{Binding WildLast50Dec}" />
+                    <GridViewColumn Header=" Last 50 SPS "  DisplayMemberBinding="{Binding WildLast50Dec}" />
                     <GridViewColumn Header=" Last 50 "  DisplayMemberBinding="{Binding WildLast50}" />
                     <GridViewColumn Header=" Overall "  DisplayMemberBinding="{Binding WildWinRate}" />
                     <GridViewColumn Header=" Start(UTC) "  DisplayMemberBinding="{Binding Created_date,StringFormat=dd/MM/yyyy HH:mm:ss}" />

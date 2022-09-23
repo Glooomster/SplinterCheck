@@ -101,6 +101,7 @@ namespace SplinterCheck
                 //Last 50 Matches Win rate modern
 
 
+                Debug.WriteLine("Start" + DateTime.Now.ToString());
 
                 string getModernBattles = ApiRequest.GetApiResponse("battle/history?player=" + account.AccName + "&format=modern" );
 
@@ -108,8 +109,13 @@ namespace SplinterCheck
 
                 var modernBattles = JsonConvert.DeserializeObject<PlayerBattles>(getModernBattles);
 
-               // SpDataHelper.playerBattles = Task.Run(() => new SplinterProcessor().LoadBattleHistory(account.AccName, "modern")).Result;
 
+                Debug.WriteLine("start second" + DateTime.Now.ToString());
+
+                 SpDataHelper.playerBattles = Task.Run(() => new SplinterProcessor().LoadBattleHistory(account.AccName, "modern")).Result;
+
+
+                Debug.WriteLine("done" + DateTime.Now.ToString());
 
                 int totalmodernWins = 0;
                 int totalmoderngames = modernBattles.Battles.Count;
@@ -124,7 +130,7 @@ namespace SplinterCheck
                         if (battleItem.BattleDetails.Winner == account.AccName)
                         {
                             totalmodernWins++;
-                            modernDec = modernDec + Convert.ToDouble(battleItem.Reward_Dec);
+                            modernDec = modernDec + Convert.ToDouble(battleItem.Reward_Sps);
 
                         }
 
@@ -137,7 +143,6 @@ namespace SplinterCheck
                 var wildBattles = JsonConvert.DeserializeObject<PlayerBattles>(getWildBattles);
 
 
-                Debug.WriteLine("test");
 
 
                 //Helpers.SpDataHelper.battlesClass = Task.Run(() => new Processors.SplinterProcessor().LoadBattleHistory(account.AccName, "wild")).Result;
@@ -154,7 +159,7 @@ namespace SplinterCheck
                         if (battleItem.BattleDetails.Winner == account.AccName)
                         {
                             totalWildnWins++;
-                            wildDec = wildDec + Convert.ToDouble(battleItem.Reward_Dec);
+                            wildDec = wildDec + Convert.ToDouble(battleItem.Reward_Sps);
 
                         }
 
